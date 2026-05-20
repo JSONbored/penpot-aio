@@ -1,25 +1,26 @@
-# Customization Guide
+# Advanced Configuration
 
-Use this file as the per-app advanced configuration guide in derived repos.
+The Unraid template exposes upstream Penpot settings as Advanced options. Dropdowns are used where valid values are known.
 
-Recommended sections:
+## Flags
 
-## 1. Internal vs External Services
+Leave `PENPOT_FLAGS` blank to use `PENPOT_AIO_DEFAULT_FLAGS` plus per-flag dropdown controls. Set `PENPOT_FLAGS` only when you want full raw upstream control.
 
-Document which databases, search backends, or sidecars are internal by default and which can be overridden.
+Default AIO flags:
 
-## 2. AI Provider Overrides
+- `disable-email-verification`
+- `enable-smtp`
+- `disable-secure-session-cookies`
+- `enable-mcp`
 
-Document local providers, OpenAI-compatible endpoints, hosted APIs, and any required model variables.
+## Storage
 
-## 3. Remote Access
+Filesystem storage is the default and uses `/appdata/assets`. S3-compatible storage requires `PENPOT_OBJECTS_STORAGE_BACKEND=s3` plus the matching bucket, endpoint, region, and credentials.
 
-Document required hostname, proxy, CSRF, and trusted-domain settings.
+## Auth
 
-## 4. Storage Paths
+GitHub, GitLab, Google, OIDC, LDAP, domain allow/block lists, and cookie controls are exposed in Advanced View. Configure the matching login flags when enabling provider-based login.
 
-Document every mapped path and what data it stores.
+## MCP
 
-## 5. Optional Integrations
-
-Document sandboxes, web search, telemetry, TTS, auth providers, or any other optional upstream features.
+MCP runs internally by default and is proxied through `/mcp`. Direct host ports for `4401` and `4402` are optional and blank by default.

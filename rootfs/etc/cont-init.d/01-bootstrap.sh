@@ -2,27 +2,25 @@
 # shellcheck shell=bash
 set -euo pipefail
 
-mkdir -p /config/aio
+source /usr/local/bin/env-helpers.sh
 
-ENV_FILE="/config/aio/generated.env"
-touch "${ENV_FILE}"
-chown root:appuser /config/aio "${ENV_FILE}"
-chmod 750 /config/aio
-chmod 640 "${ENV_FILE}"
+mkdir -p \
+	/appdata/assets \
+	/appdata/config \
+	/appdata/logs \
+	/appdata/logs/mcp \
+	/appdata/mailpit \
+	/appdata/postgres \
+	/appdata/redis \
+	/run/penpot-aio \
+	/run/postgresql
 
-persist_if_missing() {
-	local key="$1"
-	local value="$2"
-	if grep -q "^${key}=" "${ENV_FILE}"; then
-		return
-	fi
-	printf '%s="%s"\n' "${key}" "${value}" >>"${ENV_FILE}"
-}
+chown -R penpot:penpot /appdata/assets /appdata/logs
+chown -R postgres:postgres /appdata/postgres /run/postgresql
+chown -R redis:redis /appdata/redis
+chown -R mailpit:mailpit /appdata/mailpit
+chmod 700 /appdata/postgres /appdata/redis /appdata/mailpit
 
-# Replace these with any first-run secrets your app needs.
-if [[ -z ${APP_SECRET_KEY-} ]]; then
-	generated_secret="$(openssl rand -hex 64)"
-	persist_if_missing "APP_SECRET_KEY" "${generated_secret}"
-fi
+configure_runtime_env
 
-echo "[aio-template] Generated first-run values are stored at ${ENV_FILE}."
+log "Generated and runtime environment are ready. Generated values are stored at ${ENV_FILE}."

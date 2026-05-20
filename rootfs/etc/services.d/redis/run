@@ -1,0 +1,47 @@
+#!/command/with-contenv bash
+# shellcheck shell=bash
+set -euo pipefail
+
+source /usr/local/bin/env-helpers.sh
+load_runtime_env
+
+if redis_is_external; then
+	log "External Redis/Valkey configured. Bundled Redis-compatible service staying idle."
+	exec sleep infinity
+fi
+
+mkdir -p /appdata/redis
+chown -R redis:redis /appdata/redis
+chmod 700 /appdata/redis
+
+REDIS_CONFIG_FILE="/run/penpot-aio/redis.conf"
+python3 - "${REDIS_CONFIG_FILE}" "${PENPOT_AIO_REDIS_PASSWORD}" "${PENPOT_AIO_REDIS_MAXMEMORY:-256mb}" "${PENPOT_AIO_REDIS_MAXMEMORY_POLICY:-volatile-lfu}" <<'PY'
+import sys
+
+path, password, maxmemory, policy = sys.argv[1:5]
+
+def redis_string(value: str) -> str:
+    return '"' + value.replace("\\", "\\\\").replace('"', '\\"') + '"'
+
+with open(path, "w", encoding="utf-8") as handle:
+    handle.write(
+        "\n".join(
+            [
+                "bind 127.0.0.1",
+                "protected-mode yes",
+                "port 6379",
+                "dir /appdata/redis",
+                "appendonly yes",
+                "save 60 1",
+                f"requirepass {redis_string(password)}",
+                f"maxmemory {maxmemory}",
+                f"maxmemory-policy {policy}",
+                "",
+            ]
+        )
+    )
+PY
+chown redis:redis "${REDIS_CONFIG_FILE}"
+chmod 600 "${REDIS_CONFIG_FILE}"
+
+exec /command/s6-setuidgid redis redis-server "${REDIS_CONFIG_FILE}"
