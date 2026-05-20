@@ -1,0 +1,29 @@
+schema_version: 1
+repo: unraid-aio-template
+github_repo: JSONbored/unraid-aio-template
+app_slug: unraid-aio-template
+image:
+  name: jsonbored/unraid-aio-template
+  cache_scope: unraid-aio-template-image
+  pytest_tag: aio-template:pytest
+  publish_platforms: linux/amd64,linux/arm64
+release:
+  name: Template
+  profile: template
+  previous_tag_command: latest-release-tag
+upstream:
+  name: AIO Template
+  version_key: UPSTREAM_VERSION
+  digest_arg: UPSTREAM_IMAGE_DIGEST
+template:
+  xml_paths:
+    - template-aio.xml
+  generated: false
+catalog:
+  published: false
+  assets:
+    - source: template-aio.xml
+      target: template-aio.xml
+tests:
+  integration: tests/integration -m integration
+  checkout_submodules: false
