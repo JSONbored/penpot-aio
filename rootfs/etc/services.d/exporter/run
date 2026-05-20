@@ -1,0 +1,17 @@
+#!/command/with-contenv bash
+# shellcheck shell=bash
+set -euo pipefail
+
+source /usr/local/bin/env-helpers.sh
+load_runtime_env
+
+wait_for_redis_ready
+
+export HOME="/opt/penpot"
+export USER="penpot"
+export LOGNAME="penpot"
+export PATH="/command:/opt/node/bin:/opt/imagick/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin"
+export PLAYWRIGHT_BROWSERS_PATH="${PLAYWRIGHT_BROWSERS_PATH:-/opt/penpot/browsers}"
+
+cd /opt/penpot/exporter
+exec /command/s6-setuidgid penpot /opt/node/bin/node app.js

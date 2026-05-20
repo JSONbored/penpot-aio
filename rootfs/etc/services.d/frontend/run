@@ -1,0 +1,59 @@
+#!/command/with-contenv bash
+# shellcheck shell=bash
+set -euo pipefail
+
+source /usr/local/bin/env-helpers.sh
+load_runtime_env
+
+wait_for_tcp_endpoint "127.0.0.1" "${PENPOT_HTTP_SERVER_PORT:-6060}" "Penpot backend"
+
+write_js_config_value() {
+	local variable_name="$1"
+	local variable_value="$2"
+	local mode="$3"
+
+	node - /var/www/app/js/config.js "${variable_name}" "${variable_value}" "${mode}" <<'NODE'
+const fs = require("fs");
+
+const [file, variableName, variableValue, mode] = process.argv.slice(2);
+const escapedName = variableName.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+const assignment = `var ${variableName} = ${JSON.stringify(variableValue)};`;
+let contents = fs.readFileSync(file, "utf8");
+
+if (mode === "replace") {
+  const pattern = new RegExp(`^(?://)?var ${escapedName} = .*;$`, "m");
+  contents = pattern.test(contents)
+    ? contents.replace(pattern, assignment)
+    : `${contents.replace(/\s*$/, "\n")}${assignment}\n`;
+} else if (mode === "append-once") {
+  const pattern = new RegExp(`^var ${escapedName} = .*;\\n?`, "gm");
+  contents = contents.replace(pattern, "");
+  contents = `${contents.replace(/\s*$/, "\n")}${assignment}\n`;
+} else {
+  throw new Error(`Unsupported config write mode: ${mode}`);
+}
+
+fs.writeFileSync(file, contents);
+NODE
+}
+
+if [[ ${PENPOT_FLAGS:-} == *"enable-air-gapped-conf"* ]]; then
+	rm -f /etc/nginx/overrides/location.d/external-locations.conf
+	export PENPOT_FLAGS="${PENPOT_FLAGS} disable-google-fonts-provider disable-dashboard-templates-section"
+fi
+
+if [[ -n ${PENPOT_FLAGS:-} ]]; then
+	write_js_config_value "penpotFlags" "${PENPOT_FLAGS}" "replace"
+fi
+
+if [[ -n ${PENPOT_PUBLIC_URI:-} ]]; then
+	write_js_config_value "penpotPublicURI" "${PENPOT_PUBLIC_URI}" "append-once"
+fi
+
+PENPOT_DEFAULT_INTERNAL_RESOLVER="$(awk 'BEGIN{ORS=" "} $1=="nameserver" { sub(/%.*$/,"",$2); print ($2 ~ ":")? "["$2"]": $2}' /etc/resolv.conf)"
+export PENPOT_INTERNAL_RESOLVER="${PENPOT_INTERNAL_RESOLVER:-${PENPOT_DEFAULT_INTERNAL_RESOLVER}}"
+envsubst '$PENPOT_INTERNAL_RESOLVER' < /tmp/resolvers.conf.template > /etc/nginx/overrides/http.d/resolvers.conf
+envsubst '$PENPOT_BACKEND_URI,$PENPOT_EXPORTER_URI,$PENPOT_NITRATE_URI,$PENPOT_MCP_URI,$PENPOT_MCP_URI_WS,$PENPOT_HTTP_SERVER_MAX_BODY_SIZE' \
+	< /tmp/nginx.conf.template > /etc/nginx/nginx.conf
+
+exec nginx -g "daemon off;"

@@ -69,8 +69,18 @@ def create_docker_volume(prefix: str) -> str:
     return volume_name
 
 
+def create_docker_network(prefix: str) -> str:
+    network_name = f"{prefix}-{uuid.uuid4().hex[:10]}"
+    run_command(["docker", "network", "create", network_name])
+    return network_name
+
+
 def remove_docker_volume(volume_name: str) -> None:
     run_command(["docker", "volume", "rm", "-f", volume_name], check=False)
+
+
+def remove_docker_network(network_name: str) -> None:
+    run_command(["docker", "network", "rm", network_name], check=False)
 
 
 @contextmanager
@@ -80,6 +90,15 @@ def docker_volume(prefix: str) -> Iterator[str]:
         yield volume_name
     finally:
         remove_docker_volume(volume_name)
+
+
+@contextmanager
+def docker_network(prefix: str) -> Iterator[str]:
+    network_name = create_docker_network(prefix)
+    try:
+        yield network_name
+    finally:
+        remove_docker_network(network_name)
 
 
 def docker_exec(
@@ -135,13 +154,32 @@ class DockerRuntime:
         self,
         *,
         env_overrides: dict[str, str] | None = None,
+        network: str | None = None,
+        preseed_appdata: list[str] | None = None,
     ) -> Iterator["ContainerHandle"]:
         suffix = uuid.uuid4().hex[:10]
-        name = f"aio-template-pytest-{suffix}"
+        name = f"penpot-aio-pytest-{suffix}"
         http_port = reserve_host_port()
-        config_volume = create_docker_volume(f"{name}-config")
-        data_volume = create_docker_volume(f"{name}-data")
+        appdata_volume = create_docker_volume(f"{name}-appdata")
         try:
+            for script in preseed_appdata or []:
+                run_command(
+                    [
+                        "docker",
+                        "run",
+                        "--rm",
+                        "--platform",
+                        "linux/amd64",
+                        "--entrypoint",
+                        "sh",
+                        "-v",
+                        f"{appdata_volume}:/appdata",
+                        self.image_tag,
+                        "-lc",
+                        script,
+                    ]
+                )
+
             command = [
                 "docker",
                 "run",
@@ -153,10 +191,11 @@ class DockerRuntime:
                 "-p",
                 f"{http_port}:8080",
                 "-v",
-                f"{config_volume}:/config",
-                "-v",
-                f"{data_volume}:/data",
+                f"{appdata_volume}:/appdata",
             ]
+
+            if network:
+                command.extend(["--network", network])
 
             if env_overrides:
                 for key, value in env_overrides.items():
@@ -168,16 +207,14 @@ class DockerRuntime:
                 runtime=self,
                 name=name,
                 http_port=http_port,
-                config_volume=config_volume,
-                data_volume=data_volume,
+                appdata_volume=appdata_volume,
             )
             try:
                 yield handle
             finally:
                 self.remove(name)
         finally:
-            remove_docker_volume(config_volume)
-            remove_docker_volume(data_volume)
+            remove_docker_volume(appdata_volume)
 
 
 class ContainerHandle:
@@ -187,14 +224,12 @@ class ContainerHandle:
         runtime: DockerRuntime,
         name: str,
         http_port: int,
-        config_volume: str,
-        data_volume: str,
+        appdata_volume: str,
     ) -> None:
         self.runtime = runtime
         self.name = name
         self.http_port = http_port
-        self.config_volume = config_volume
-        self.data_volume = data_volume
+        self.appdata_volume = appdata_volume
 
     def logs(self) -> str:
         return self.runtime.logs(self.name)
@@ -219,7 +254,7 @@ class ContainerHandle:
     def file_size(self, path: str) -> int:
         return container_file_size(self.name, path)
 
-    def wait_for_http(self, *, path: str = "/health", timeout: int = 180) -> None:
+    def wait_for_http(self, *, path: str = "/readyz", timeout: int = 420) -> None:
         deadline = time.time() + timeout
         url = f"http://127.0.0.1:{self.http_port}{path}"
 

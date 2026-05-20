@@ -1,23 +1,20 @@
 # Upstream Tracking
 
-Upstream tracking is owned by `aio-fleet`, not by app-local scripts. Derived repos declare upstream metadata in `.aio-fleet.yml`; the central `aio-fleet/fleet.yml` remains the source for generated manifests and control-plane policy.
+Penpot upstream tracking is declared in `aio-fleet/fleet.yml` and exported into `.aio-fleet.yml`.
 
-## Required Inputs
+Tracked upstream components:
 
-- upstream name and source repository
-- Dockerfile ARG that pins the upstream version
-- optional digest ARGs for images that should be immutable
-- update strategy: `pr` for safe single-image bumps, `notify` for multi-image stacks that need manual review
+- `penpotapp/frontend`
+- `penpotapp/backend`
+- `penpotapp/exporter`
+- `penpotapp/mcp`
+- `axllent/mailpit`
 
-## Dify-Style Multi-Image Stacks
-
-Dify pins multiple companion images. Keep those bumps explicit so API, web, sandbox, plugin daemon, and digest changes move together in one reviewed release task.
-
-## Validation
-
-Run this from `aio-fleet` after changing upstream metadata or Dockerfile pins:
+When Penpot updates, refresh the inventory and regenerate XML:
 
 ```sh
-python -m aio_fleet validate --repo <repo>
-python -m aio_fleet release status --repo <repo>
+python3 scripts/refresh_upstream_inventory.py
+python3 scripts/generate_penpot_template.py
 ```
+
+Version and digest ARGs in `Dockerfile` must move together.

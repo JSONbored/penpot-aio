@@ -1,29 +1,131 @@
 schema_version: 1
-repo: unraid-aio-template
-github_repo: JSONbored/unraid-aio-template
-app_slug: unraid-aio-template
+repo: penpot-aio
+github_repo: JSONbored/penpot-aio
+app_slug: penpot-aio
 image:
-  name: jsonbored/unraid-aio-template
-  cache_scope: unraid-aio-template-image
-  pytest_tag: aio-template:pytest
+  name: jsonbored/penpot-aio
+  cache_scope: penpot-aio-image
+  pytest_tag: penpot-aio:pytest
   publish_platforms: linux/amd64,linux/arm64
 release:
-  name: Template
-  profile: template
-  previous_tag_command: latest-release-tag
+  name: Penpot AIO
+  profile: changelog-version
+  previous_tag_command: latest-aio-tag
 upstream:
-  name: AIO Template
-  version_key: UPSTREAM_VERSION
-  digest_arg: UPSTREAM_IMAGE_DIGEST
+  name: Penpot
+  version_key: PENPOT_VERSION
+  digest_arg: PENPOT_BACKEND_DIGEST
+  commit_paths:
+    - Dockerfile
+    - penpot-aio.xml
+    - docs/upstream/penpot-config-inventory.json
+  monitor:
+    - component: frontend
+      name: Penpot Frontend
+      source: github-releases
+      repo: penpot/penpot
+      image: penpotapp/frontend
+      digest_source: dockerhub
+      dockerfile: Dockerfile
+      version_key: PENPOT_VERSION
+      digest_key: PENPOT_FRONTEND_DIGEST
+      stable_only: true
+      strategy: pr
+      release_notes_url: https://github.com/penpot/penpot/releases
+    - component: backend
+      name: Penpot Backend
+      source: github-releases
+      repo: penpot/penpot
+      image: penpotapp/backend
+      digest_source: dockerhub
+      dockerfile: Dockerfile
+      version_key: PENPOT_VERSION
+      digest_key: PENPOT_BACKEND_DIGEST
+      stable_only: true
+      strategy: pr
+      release_notes_url: https://github.com/penpot/penpot/releases
+    - component: exporter
+      name: Penpot Exporter
+      source: github-releases
+      repo: penpot/penpot
+      image: penpotapp/exporter
+      digest_source: dockerhub
+      dockerfile: Dockerfile
+      version_key: PENPOT_VERSION
+      digest_key: PENPOT_EXPORTER_DIGEST
+      stable_only: true
+      strategy: pr
+      release_notes_url: https://github.com/penpot/penpot/releases
+    - component: mcp
+      name: Penpot MCP
+      source: github-releases
+      repo: penpot/penpot
+      image: penpotapp/mcp
+      digest_source: dockerhub
+      dockerfile: Dockerfile
+      version_key: PENPOT_VERSION
+      digest_key: PENPOT_MCP_DIGEST
+      stable_only: true
+      strategy: pr
+      release_notes_url: https://github.com/penpot/penpot/releases
+    - component: mailpit
+      name: Mailpit
+      source: github-releases
+      repo: axllent/mailpit
+      image: axllent/mailpit
+      digest_source: dockerhub
+      dockerfile: Dockerfile
+      version_key: MAILPIT_VERSION
+      digest_key: MAILPIT_IMAGE_DIGEST
+      stable_only: true
+      strategy: pr
+      release_notes_url: https://github.com/axllent/mailpit/releases
 template:
   xml_paths:
-    - template-aio.xml
-  generated: false
+    - "*.xml"
+    - assets/**
+  generated: true
+  generator_check_command: python3 scripts/generate_penpot_template.py --check
 catalog:
-  published: false
+  published: true
   assets:
-    - source: template-aio.xml
-      target: template-aio.xml
+    - source: penpot-aio.xml
+      target: penpot-aio.xml
+    - source: assets/app-icon.png
+      target: icons/penpot.png
 tests:
+  unit: tests/template
   integration: tests/integration -m integration
+  extended_integration:
+    input_name: run_extended_integration
+    description: Run optional external PostgreSQL/Redis/S3/SMTP integration tests
+    pytest_args: tests/integration -m extended_integration
   checkout_submodules: false
+validation:
+  required_targets:
+    - /appdata
+    - "8080"
+    - "8025"
+    - PENPOT_AIO_DEFAULT_FLAGS
+    - PENPOT_AIO_ENABLE_INTERNAL_POSTGRES
+    - PENPOT_AIO_ENABLE_INTERNAL_REDIS
+    - PENPOT_AIO_ENABLE_MAILPIT
+    - PENPOT_AIO_ENABLE_MCP
+    - PENPOT_AIO_EXTRA_ENV_FILE
+    - PENPOT_AIO_WAIT_TIMEOUT_SECONDS
+    - PENPOT_DATABASE_URI
+    - PENPOT_DATABASE_USERNAME
+    - PENPOT_DATABASE_PASSWORD
+    - PENPOT_FLAGS
+    - PENPOT_MCP_REMOTE_MODE
+    - PENPOT_OBJECTS_STORAGE_BACKEND
+    - PENPOT_PUBLIC_URI
+    - PENPOT_REDIS_URI
+    - PENPOT_SECRET_KEY
+    - PENPOT_SMTP_HOST
+    - PENPOT_TELEMETRY_ENABLED
+  required_text_fields:
+    - ReadMe
+  exact_category_tokens:
+    - Productivity
+    - Tools:Utilities

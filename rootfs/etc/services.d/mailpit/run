@@ -1,0 +1,32 @@
+#!/command/with-contenv bash
+# shellcheck shell=bash
+set -euo pipefail
+
+source /usr/local/bin/env-helpers.sh
+load_runtime_env
+
+if ! mailpit_enabled; then
+	log "Bundled Mailpit disabled or external SMTP configured. Mailpit service staying idle."
+	exec sleep infinity
+fi
+
+mkdir -p /appdata/mailpit "${MAILPIT_DIR}"
+chown -R mailpit:mailpit /appdata/mailpit "${MAILPIT_DIR}"
+chmod 700 /appdata/mailpit "${MAILPIT_DIR}"
+
+if [[ ! -f ${MAILPIT_UI_AUTH_FILE} ]]; then
+	echo "Missing Mailpit UI auth file at ${MAILPIT_UI_AUTH_FILE}." >&2
+	exit 1
+fi
+
+exec /command/s6-setuidgid mailpit mailpit \
+	--database /appdata/mailpit/mailpit.db \
+	--disable-wal \
+	--disable-version-check \
+	--block-remote-css-and-fonts \
+	--smtp-disable-rdns \
+	--max "${PENPOT_AIO_MAILPIT_MAX_MESSAGES:-500}" \
+	--max-age "${PENPOT_AIO_MAILPIT_MAX_AGE:-14d}" \
+	--smtp 127.0.0.1:1025 \
+	--listen 0.0.0.0:8025 \
+	--ui-auth-file "${MAILPIT_UI_AUTH_FILE}"
