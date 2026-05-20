@@ -192,7 +192,8 @@ def parse_flags(source: str) -> list[dict[str, object]]:
             in_group = False
 
     default_states: dict[str, str] = {}
-    default_block = source[source.find("(def default") :]
+    default_start = source.find("(def default")
+    default_block = source[default_start:] if default_start != -1 else ""
     for raw in re.findall(r":(enable|disable)-([a-z0-9-]+)", default_block):
         state, name = raw
         flag_names.add(name)
