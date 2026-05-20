@@ -43,15 +43,19 @@ RUN find /etc/apt -type f \( -name '*.list' -o -name '*.sources' \) -exec sed -i
       redis-server="$(apt-cache madison redis-server | awk 'NR==1 {print $3}')" \
       redis-tools="$(apt-cache madison redis-tools | awk 'NR==1 {print $3}')" \
       xz-utils="$(apt-cache madison xz-utils | awk 'NR==1 {print $3}')" && \
-    curl -L -o /tmp/s6-overlay-noarch.tar.xz "https://github.com/just-containers/s6-overlay/releases/download/v${S6_OVERLAY_VERSION}/s6-overlay-noarch.tar.xz" && \
+    curl -fsSL -o /tmp/s6-overlay-noarch.tar.xz "https://github.com/just-containers/s6-overlay/releases/download/v${S6_OVERLAY_VERSION}/s6-overlay-noarch.tar.xz" && \
+    curl -fsSL -o /tmp/s6-overlay-noarch.tar.xz.sha256 "https://github.com/just-containers/s6-overlay/releases/download/v${S6_OVERLAY_VERSION}/s6-overlay-noarch.tar.xz.sha256" && \
+    (cd /tmp && sha256sum -c s6-overlay-noarch.tar.xz.sha256) && \
     tar -C / -Jxpf /tmp/s6-overlay-noarch.tar.xz && \
     case "${TARGETARCH}" in \
       amd64) s6_arch="x86_64" ;; \
       arm64) s6_arch="aarch64" ;; \
       *) echo "Unsupported TARGETARCH: ${TARGETARCH}" >&2; exit 1 ;; \
     esac && \
-    curl -L -o /tmp/s6-overlay-arch.tar.xz "https://github.com/just-containers/s6-overlay/releases/download/v${S6_OVERLAY_VERSION}/s6-overlay-${s6_arch}.tar.xz" && \
-    tar -C / -Jxpf /tmp/s6-overlay-arch.tar.xz && \
+    curl -fsSL -o "/tmp/s6-overlay-${s6_arch}.tar.xz" "https://github.com/just-containers/s6-overlay/releases/download/v${S6_OVERLAY_VERSION}/s6-overlay-${s6_arch}.tar.xz" && \
+    curl -fsSL -o "/tmp/s6-overlay-${s6_arch}.tar.xz.sha256" "https://github.com/just-containers/s6-overlay/releases/download/v${S6_OVERLAY_VERSION}/s6-overlay-${s6_arch}.tar.xz.sha256" && \
+    (cd /tmp && sha256sum -c "s6-overlay-${s6_arch}.tar.xz.sha256") && \
+    tar -C / -Jxpf "/tmp/s6-overlay-${s6_arch}.tar.xz" && \
     useradd --system --home-dir /var/lib/mailpit --create-home --shell /usr/sbin/nologin mailpit && \
     mkdir -p /appdata/config /appdata/assets /appdata/logs /appdata/mailpit /appdata/postgres /appdata/redis /run/penpot-aio /run/postgresql /etc/nginx/overrides/http.d && \
     chown -R penpot:penpot /appdata/assets /appdata/logs && \
