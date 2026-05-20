@@ -19,14 +19,18 @@ RUN find /etc/apt -type f \( -name '*.list' -o -name '*.sources' \) -exec sed -i
     curl="$(apt-cache madison curl | awk 'NR==1 {print $3}')" \
     openssl="$(apt-cache madison openssl | awk 'NR==1 {print $3}')" \
     xz-utils="$(apt-cache madison xz-utils | awk 'NR==1 {print $3}')" && \
-    curl -L -o /tmp/s6-overlay-noarch.tar.xz "https://github.com/just-containers/s6-overlay/releases/download/v${S6_OVERLAY_VERSION}/s6-overlay-noarch.tar.xz" && \
+    curl -fsSL -o /tmp/s6-overlay-noarch.tar.xz "https://github.com/just-containers/s6-overlay/releases/download/v${S6_OVERLAY_VERSION}/s6-overlay-noarch.tar.xz" && \
+    curl -fsSL -o /tmp/s6-overlay-noarch.tar.xz.sha256 "https://github.com/just-containers/s6-overlay/releases/download/v${S6_OVERLAY_VERSION}/s6-overlay-noarch.tar.xz.sha256" && \
+    sha256sum -c /tmp/s6-overlay-noarch.tar.xz.sha256 && \
     tar -C / -Jxpf /tmp/s6-overlay-noarch.tar.xz && \
     case "${TARGETARCH}" in \
       amd64) s6_arch="x86_64" ;; \
       arm64) s6_arch="aarch64" ;; \
       *) echo "Unsupported TARGETARCH: ${TARGETARCH}" >&2; exit 1 ;; \
     esac && \
-    curl -L -o /tmp/s6-overlay-arch.tar.xz "https://github.com/just-containers/s6-overlay/releases/download/v${S6_OVERLAY_VERSION}/s6-overlay-${s6_arch}.tar.xz" && \
+    curl -fsSL -o /tmp/s6-overlay-arch.tar.xz "https://github.com/just-containers/s6-overlay/releases/download/v${S6_OVERLAY_VERSION}/s6-overlay-${s6_arch}.tar.xz" && \
+    curl -fsSL -o /tmp/s6-overlay-arch.tar.xz.sha256 "https://github.com/just-containers/s6-overlay/releases/download/v${S6_OVERLAY_VERSION}/s6-overlay-${s6_arch}.tar.xz.sha256" && \
+    sha256sum -c /tmp/s6-overlay-arch.tar.xz.sha256 && \
     tar -C / -Jxpf /tmp/s6-overlay-arch.tar.xz && \
     groupadd --system appuser && \
     useradd --system --gid appuser --create-home --home-dir /home/appuser --shell /usr/sbin/nologin appuser && \
