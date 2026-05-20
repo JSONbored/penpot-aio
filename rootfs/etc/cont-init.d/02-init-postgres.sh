@@ -1,5 +1,6 @@
 #!/command/with-contenv bash
 # shellcheck shell=bash
+# shellcheck disable=SC1091,SC2154
 set -euo pipefail
 
 source /usr/local/bin/env-helpers.sh

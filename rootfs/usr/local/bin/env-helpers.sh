@@ -85,6 +85,7 @@ load_generated_env() {
 		if [[ -n ${!key-} ]]; then
 			continue
 		fi
+		local decoded_value
 		decoded_value="$(
 			node - "${raw_value}" <<'NODE'
 const raw = process.argv[2];
@@ -109,7 +110,7 @@ load_extra_env() {
 }
 
 env_flag_is_false() {
-	case "${1:-}" in
+	case "${1-}" in
 	0 | false | FALSE | no | NO | off | OFF)
 		return 0
 		;;
@@ -120,7 +121,7 @@ env_flag_is_false() {
 }
 
 env_flag_is_true() {
-	case "${1:-}" in
+	case "${1-}" in
 	1 | true | TRUE | yes | YES | on | ON)
 		return 0
 		;;
@@ -148,21 +149,21 @@ postgres_is_external() {
 	if env_flag_is_false "${PENPOT_AIO_ENABLE_INTERNAL_POSTGRES:-true}"; then
 		return 0
 	fi
-	[[ -n ${PENPOT_DATABASE_URI:-} ]] && ! uri_host_is_loopback "${PENPOT_DATABASE_URI}"
+	[[ -n ${PENPOT_DATABASE_URI-} ]] && ! uri_host_is_loopback "${PENPOT_DATABASE_URI}"
 }
 
 redis_is_external() {
 	if env_flag_is_false "${PENPOT_AIO_ENABLE_INTERNAL_REDIS:-true}"; then
 		return 0
 	fi
-	[[ -n ${PENPOT_REDIS_URI:-} ]] && ! uri_host_is_loopback "${PENPOT_REDIS_URI}"
+	[[ -n ${PENPOT_REDIS_URI-} ]] && ! uri_host_is_loopback "${PENPOT_REDIS_URI}"
 }
 
 mailpit_enabled() {
 	if env_flag_is_false "${PENPOT_AIO_ENABLE_MAILPIT:-true}"; then
 		return 1
 	fi
-	if [[ -z ${PENPOT_SMTP_HOST:-} ]]; then
+	if [[ -z ${PENPOT_SMTP_HOST-} ]]; then
 		return 0
 	fi
 	[[ ${PENPOT_SMTP_HOST} == "127.0.0.1" || ${PENPOT_SMTP_HOST} == "localhost" ]] && [[ ${PENPOT_SMTP_PORT:-1025} == "1025" ]]
@@ -232,28 +233,34 @@ configure_runtime_env() {
 	export PENPOT_MCP_LOG_LEVEL="${PENPOT_MCP_LOG_LEVEL:-info}"
 	export PENPOT_MCP_LOG_DIR="${PENPOT_MCP_LOG_DIR:-/appdata/logs/mcp}"
 
-	if [[ -z ${PENPOT_SECRET_KEY:-} ]]; then
+	if [[ -z ${PENPOT_SECRET_KEY-} ]]; then
 		persist_if_missing "PENPOT_SECRET_KEY" "$(random_token 64)"
-		export PENPOT_SECRET_KEY="$(generated_value PENPOT_SECRET_KEY)"
+		local generated_secret_key
+		generated_secret_key="$(generated_value PENPOT_SECRET_KEY)"
+		export PENPOT_SECRET_KEY="${generated_secret_key}"
 	fi
 
 	if ! postgres_is_external; then
-		if [[ -z ${PENPOT_DATABASE_PASSWORD:-} ]]; then
+		if [[ -z ${PENPOT_DATABASE_PASSWORD-} ]]; then
 			persist_if_missing "PENPOT_DATABASE_PASSWORD" "$(openssl rand -hex 24)"
-			export PENPOT_DATABASE_PASSWORD="$(generated_value PENPOT_DATABASE_PASSWORD)"
+			local generated_database_password
+			generated_database_password="$(generated_value PENPOT_DATABASE_PASSWORD)"
+			export PENPOT_DATABASE_PASSWORD="${generated_database_password}"
 		fi
 		export PENPOT_DATABASE_USERNAME="${PENPOT_DATABASE_USERNAME:-penpot}"
-		if [[ -z ${PENPOT_DATABASE_URI:-} ]]; then
+		if [[ -z ${PENPOT_DATABASE_URI-} ]]; then
 			export PENPOT_DATABASE_URI="postgresql://127.0.0.1:5432/${PENPOT_AIO_DATABASE_NAME}"
 		fi
 	fi
 
 	if ! redis_is_external; then
-		if [[ -z ${PENPOT_AIO_REDIS_PASSWORD:-} ]]; then
+		if [[ -z ${PENPOT_AIO_REDIS_PASSWORD-} ]]; then
 			persist_if_missing "PENPOT_AIO_REDIS_PASSWORD" "$(openssl rand -hex 24)"
-			export PENPOT_AIO_REDIS_PASSWORD="$(generated_value PENPOT_AIO_REDIS_PASSWORD)"
+			local generated_redis_password
+			generated_redis_password="$(generated_value PENPOT_AIO_REDIS_PASSWORD)"
+			export PENPOT_AIO_REDIS_PASSWORD="${generated_redis_password}"
 		fi
-		if [[ -z ${PENPOT_REDIS_URI:-} ]]; then
+		if [[ -z ${PENPOT_REDIS_URI-} ]]; then
 			export PENPOT_REDIS_URI="redis://default:${PENPOT_AIO_REDIS_PASSWORD}@127.0.0.1:6379/0"
 		fi
 	fi
@@ -266,19 +273,25 @@ configure_runtime_env() {
 		export PENPOT_SMTP_DEFAULT_FROM="${PENPOT_SMTP_DEFAULT_FROM:-Penpot <no-reply@penpot.local>}"
 		export PENPOT_SMTP_DEFAULT_REPLY_TO="${PENPOT_SMTP_DEFAULT_REPLY_TO:-Penpot <no-reply@penpot.local>}"
 
-		if [[ -z ${PENPOT_AIO_MAILPIT_UI_USERNAME:-} ]]; then
+		if [[ -z ${PENPOT_AIO_MAILPIT_UI_USERNAME-} ]]; then
 			persist_if_missing "PENPOT_AIO_MAILPIT_UI_USERNAME" "penpot"
-			export PENPOT_AIO_MAILPIT_UI_USERNAME="$(generated_value PENPOT_AIO_MAILPIT_UI_USERNAME)"
+			local generated_mailpit_username
+			generated_mailpit_username="$(generated_value PENPOT_AIO_MAILPIT_UI_USERNAME)"
+			export PENPOT_AIO_MAILPIT_UI_USERNAME="${generated_mailpit_username}"
 		fi
-		if [[ -z ${PENPOT_AIO_MAILPIT_UI_PASSWORD:-} ]]; then
+		if [[ -z ${PENPOT_AIO_MAILPIT_UI_PASSWORD-} ]]; then
 			persist_if_missing "PENPOT_AIO_MAILPIT_UI_PASSWORD" "$(random_token 24)"
-			export PENPOT_AIO_MAILPIT_UI_PASSWORD="$(generated_value PENPOT_AIO_MAILPIT_UI_PASSWORD)"
+			local generated_mailpit_password
+			generated_mailpit_password="$(generated_value PENPOT_AIO_MAILPIT_UI_PASSWORD)"
+			export PENPOT_AIO_MAILPIT_UI_PASSWORD="${generated_mailpit_password}"
 		fi
 		write_mailpit_ui_auth_file "${PENPOT_AIO_MAILPIT_UI_USERNAME}" "${PENPOT_AIO_MAILPIT_UI_PASSWORD}"
 	fi
 
-	if [[ -z ${PENPOT_FLAGS:-} ]]; then
-		export PENPOT_FLAGS="$(compose_penpot_flags)"
+	if [[ -z ${PENPOT_FLAGS-} ]]; then
+		local composed_flags
+		composed_flags="$(compose_penpot_flags)"
+		export PENPOT_FLAGS="${composed_flags}"
 	fi
 
 	load_extra_env
@@ -348,7 +361,7 @@ wait_for_redis_ready() {
 	redis_is_external && return 0
 	local timeout="${PENPOT_AIO_WAIT_TIMEOUT_SECONDS:-360}"
 	local deadline=$((SECONDS + timeout))
-	until REDISCLI_AUTH="${PENPOT_AIO_REDIS_PASSWORD:-}" redis-cli -h 127.0.0.1 -p 6379 ping 2>/dev/null | grep -qx "PONG"; do
+	until REDISCLI_AUTH="${PENPOT_AIO_REDIS_PASSWORD-}" redis-cli -h 127.0.0.1 -p 6379 ping 2>/dev/null | grep -qx "PONG"; do
 		if ((SECONDS >= deadline)); then
 			printf 'Timed out waiting for Redis-compatible cache.\n' >&2
 			return 1

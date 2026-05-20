@@ -82,7 +82,7 @@ upstream:
       release_notes_url: https://github.com/axllent/mailpit/releases
 template:
   xml_paths:
-    - '*.xml'
+    - "*.xml"
     - assets/**
   generated: true
   generator_check_command: python3 scripts/generate_penpot_template.py --check

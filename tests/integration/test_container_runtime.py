@@ -5,7 +5,13 @@ import uuid
 
 import pytest
 
-from tests.helpers import DockerRuntime, docker_available, docker_network, docker_exec, run_command
+from tests.helpers import (
+    DockerRuntime,
+    docker_available,
+    docker_exec,
+    docker_network,
+    run_command,
+)
 
 IMAGE_TAG = "penpot-aio:pytest"
 pytestmark = pytest.mark.integration
@@ -40,14 +46,25 @@ def test_happy_path_boot_and_restart_persists_generated_env(
         secret_before = container.exec(
             "awk -F= '/^PENPOT_SECRET_KEY=/{print $2}' /appdata/config/generated.env"
         ).stdout.strip()
-        redis_password = container.exec(
-            "awk -F= '/^PENPOT_AIO_REDIS_PASSWORD=/{print $2}' /appdata/config/generated.env"
-        ).stdout.strip().strip('"')
+        redis_password = (
+            container.exec(
+                "awk -F= '/^PENPOT_AIO_REDIS_PASSWORD=/{print $2}' /appdata/config/generated.env"
+            )
+            .stdout.strip()
+            .strip('"')
+        )
         assert secret_before  # nosec B101
         assert redis_password  # nosec B101
 
         processes = container.exec("ps -eo comm=,args=").stdout
-        for expected in ("postgres", "redis-server", "mailpit", "nginx", "java", "node"):
+        for expected in (
+            "postgres",
+            "redis-server",
+            "mailpit",
+            "nginx",
+            "java",
+            "node",
+        ):
             assert expected in processes  # nosec B101
         assert redis_password not in processes  # nosec B101
 
@@ -97,7 +114,9 @@ def test_extra_env_file_overrides_generated_runtime_defaults(
     ) as container:
         container.wait_for_http(path="/readyz")
         runtime_env = container.read_text("/run/penpot-aio/runtime.env")
-        assert "export PENPOT_TELEMETRY_REFERER=extra-env-test" in runtime_env  # nosec B101
+        assert (
+            "export PENPOT_TELEMETRY_REFERER=extra-env-test" in runtime_env
+        )  # nosec B101
         assert "export PENPOT_FLAGS=enable-demo-users" in runtime_env  # nosec B101
 
 
@@ -116,7 +135,9 @@ def test_external_smtp_configuration_keeps_bundled_mailpit_idle(
         runtime_env = container.read_text("/run/penpot-aio/runtime.env")
         assert "export PENPOT_SMTP_HOST=smtp.example.test" in runtime_env  # nosec B101
         assert "export PENPOT_SMTP_TLS=true" in runtime_env  # nosec B101
-        assert container.exec("pgrep -x mailpit", check=False).returncode != 0  # nosec B101
+        assert (
+            container.exec("pgrep -x mailpit", check=False).returncode != 0
+        )  # nosec B101
 
 
 def test_mcp_service_can_be_disabled_without_blocking_frontend(
@@ -141,10 +162,15 @@ def test_frontend_config_encodes_public_uri_as_javascript_string(
     runtime: DockerRuntime,
 ) -> None:
     public_uri = 'http://127.0.0.1:9001/?next="quoted"'
-    with runtime.container(env_overrides={"PENPOT_PUBLIC_URI": public_uri}) as container:
+    with runtime.container(
+        env_overrides={"PENPOT_PUBLIC_URI": public_uri}
+    ) as container:
         container.wait_for_http(path="/")
         config = container.read_text("/var/www/app/js/config.js")
-        assert 'var penpotPublicURI = "http://127.0.0.1:9001/?next=\\"quoted\\"";' in config  # nosec B101
+        assert (
+            'var penpotPublicURI = "http://127.0.0.1:9001/?next=\\"quoted\\"";'
+            in config
+        )  # nosec B101
         container.exec("node --check /var/www/app/js/config.js")
 
 
@@ -153,7 +179,9 @@ def test_external_postgres_and_redis_mode_boots_without_bundled_services(
     runtime: DockerRuntime,
 ) -> None:
     if os.environ.get("AIO_RUN_EXTENDED_INTEGRATION") != "true":
-        pytest.skip("Set AIO_RUN_EXTENDED_INTEGRATION=true to run external service matrix tests.")
+        pytest.skip(
+            "Set AIO_RUN_EXTENDED_INTEGRATION=true to run external service matrix tests."
+        )
 
     postgres_image = os.environ.get("AIO_TEST_POSTGRES_IMAGE", "postgres:16-alpine")
     redis_image = os.environ.get("AIO_TEST_REDIS_IMAGE", "redis:7-alpine")
@@ -202,7 +230,10 @@ def test_external_postgres_and_redis_mode_boots_without_bundled_services(
             )
 
             _wait_for_service(
-                lambda: docker_exec(postgres_name, "pg_isready -U penpot -d penpot", check=False).returncode == 0,
+                lambda: docker_exec(
+                    postgres_name, "pg_isready -U penpot -d penpot", check=False
+                ).returncode
+                == 0,
                 label="external PostgreSQL",
             )
             _wait_for_service(

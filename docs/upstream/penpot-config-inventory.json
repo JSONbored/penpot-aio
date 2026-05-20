@@ -5,18 +5,14 @@
       "enum": [],
       "kind": "string",
       "name": "AWS_ACCESS_KEY_ID",
-      "sources": [
-        "docs_config"
-      ]
+      "sources": ["docs_config"]
     },
     {
       "default": "",
       "enum": [],
       "kind": "string",
       "name": "AWS_SECRET_ACCESS_KEY",
-      "sources": [
-        "docs_config"
-      ]
+      "sources": ["docs_config"]
     },
     {
       "config_key": "admins",
@@ -24,9 +20,7 @@
       "enum": [],
       "kind": "string",
       "name": "PENPOT_ADMINS",
-      "sources": [
-        "backend_config"
-      ]
+      "sources": ["backend_config"]
     },
     {
       "config_key": "allow-demo-users",
@@ -34,9 +28,7 @@
       "enum": [],
       "kind": "boolean",
       "name": "PENPOT_ALLOW_DEMO_USERS",
-      "sources": [
-        "backend_config"
-      ]
+      "sources": ["backend_config"]
     },
     {
       "config_key": "assets-path",
@@ -44,9 +36,7 @@
       "enum": [],
       "kind": "string",
       "name": "PENPOT_ASSETS_PATH",
-      "sources": [
-        "backend_config"
-      ]
+      "sources": ["backend_config"]
     },
     {
       "config_key": "assets-storage-backend",
@@ -54,10 +44,7 @@
       "enum": [],
       "kind": "string",
       "name": "PENPOT_ASSETS_STORAGE_BACKEND",
-      "sources": [
-        "backend_config",
-        "docs_config"
-      ]
+      "sources": ["backend_config", "docs_config"]
     },
     {
       "config_key": "audit-log-archive-uri",
@@ -65,9 +52,7 @@
       "enum": [],
       "kind": "string",
       "name": "PENPOT_AUDIT_LOG_ARCHIVE_URI",
-      "sources": [
-        "backend_config"
-      ]
+      "sources": ["backend_config"]
     },
     {
       "config_key": "audit-log-http-handler-concurrency",
@@ -75,9 +60,7 @@
       "enum": [],
       "kind": "integer",
       "name": "PENPOT_AUDIT_LOG_HTTP_HANDLER_CONCURRENCY",
-      "sources": [
-        "backend_config"
-      ]
+      "sources": ["backend_config"]
     },
     {
       "config_key": "auth-token-cookie-max-age",
@@ -85,9 +68,7 @@
       "enum": [],
       "kind": "duration",
       "name": "PENPOT_AUTH_TOKEN_COOKIE_MAX_AGE",
-      "sources": [
-        "backend_config"
-      ]
+      "sources": ["backend_config"]
     },
     {
       "config_key": "auth-token-cookie-name",
@@ -95,9 +76,7 @@
       "enum": [],
       "kind": "string",
       "name": "PENPOT_AUTH_TOKEN_COOKIE_NAME",
-      "sources": [
-        "backend_config"
-      ]
+      "sources": ["backend_config"]
     },
     {
       "config_key": "auto-file-snapshot-every",
@@ -105,10 +84,7 @@
       "enum": [],
       "kind": "integer",
       "name": "PENPOT_AUTO_FILE_SNAPSHOT_EVERY",
-      "sources": [
-        "backend_config",
-        "docs_config"
-      ]
+      "sources": ["backend_config", "docs_config"]
     },
     {
       "config_key": "auto-file-snapshot-timeout",
@@ -116,20 +92,14 @@
       "enum": [],
       "kind": "duration",
       "name": "PENPOT_AUTO_FILE_SNAPSHOT_TIMEOUT",
-      "sources": [
-        "backend_config",
-        "docs_config"
-      ]
+      "sources": ["backend_config", "docs_config"]
     },
     {
       "default": "",
       "enum": [],
       "kind": "string",
       "name": "PENPOT_BACKEND_URI",
-      "sources": [
-        "docs_config",
-        "frontend_entrypoint"
-      ]
+      "sources": ["docs_config", "frontend_entrypoint"]
     },
     {
       "config_key": "database-max-pool-size",
@@ -137,9 +107,7 @@
       "enum": [],
       "kind": "integer",
       "name": "PENPOT_DATABASE_MAX_POOL_SIZE",
-      "sources": [
-        "backend_config"
-      ]
+      "sources": ["backend_config"]
     },
     {
       "config_key": "database-min-pool-size",
@@ -147,9 +115,7 @@
       "enum": [],
       "kind": "integer",
       "name": "PENPOT_DATABASE_MIN_POOL_SIZE",
-      "sources": [
-        "backend_config"
-      ]
+      "sources": ["backend_config"]
     },
     {
       "config_key": "database-password",
@@ -157,11 +123,7 @@
       "enum": [],
       "kind": "string",
       "name": "PENPOT_DATABASE_PASSWORD",
-      "sources": [
-        "backend_config",
-        "compose",
-        "docs_config"
-      ]
+      "sources": ["backend_config", "compose", "docs_config"]
     },
     {
       "config_key": "database-readonly",
@@ -169,9 +131,7 @@
       "enum": [],
       "kind": "boolean",
       "name": "PENPOT_DATABASE_READONLY",
-      "sources": [
-        "backend_config"
-      ]
+      "sources": ["backend_config"]
     },
     {
       "config_key": "database-uri",
@@ -179,11 +139,7 @@
       "enum": [],
       "kind": "uri",
       "name": "PENPOT_DATABASE_URI",
-      "sources": [
-        "backend_config",
-        "compose",
-        "docs_config"
-      ]
+      "sources": ["backend_config", "compose", "docs_config"]
     },
     {
       "config_key": "database-username",
@@ -191,11 +147,7 @@
       "enum": [],
       "kind": "string",
       "name": "PENPOT_DATABASE_USERNAME",
-      "sources": [
-        "backend_config",
-        "compose",
-        "docs_config"
-      ]
+      "sources": ["backend_config", "compose", "docs_config"]
     },
     {
       "config_key": "default-blob-version",
@@ -203,9 +155,7 @@
       "enum": [],
       "kind": "integer",
       "name": "PENPOT_DEFAULT_BLOB_VERSION",
-      "sources": [
-        "backend_config"
-      ]
+      "sources": ["backend_config"]
     },
     {
       "config_key": "default-executor-parallelism",
@@ -213,18 +163,14 @@
       "enum": [],
       "kind": "integer",
       "name": "PENPOT_DEFAULT_EXECUTOR_PARALLELISM",
-      "sources": [
-        "backend_config"
-      ]
+      "sources": ["backend_config"]
     },
     {
       "default": "",
       "enum": [],
       "kind": "string",
       "name": "PENPOT_DEFAULT_INTERNAL_RESOLVER",
-      "sources": [
-        "frontend_entrypoint"
-      ]
+      "sources": ["frontend_entrypoint"]
     },
     {
       "config_key": "default-rpc-rlimit",
@@ -232,9 +178,7 @@
       "enum": [],
       "kind": "string",
       "name": "PENPOT_DEFAULT_RPC_RLIMIT",
-      "sources": [
-        "backend_config"
-      ]
+      "sources": ["backend_config"]
     },
     {
       "config_key": "deletion-delay",
@@ -242,9 +186,7 @@
       "enum": [],
       "kind": "duration",
       "name": "PENPOT_DELETION_DELAY",
-      "sources": [
-        "backend_config"
-      ]
+      "sources": ["backend_config"]
     },
     {
       "config_key": "email-domain-blacklist",
@@ -252,10 +194,7 @@
       "enum": [],
       "kind": "path",
       "name": "PENPOT_EMAIL_DOMAIN_BLACKLIST",
-      "sources": [
-        "backend_config",
-        "docs_config"
-      ]
+      "sources": ["backend_config", "docs_config"]
     },
     {
       "config_key": "email-domain-whitelist",
@@ -263,10 +202,7 @@
       "enum": [],
       "kind": "path",
       "name": "PENPOT_EMAIL_DOMAIN_WHITELIST",
-      "sources": [
-        "backend_config",
-        "docs_config"
-      ]
+      "sources": ["backend_config", "docs_config"]
     },
     {
       "config_key": "email-verify-threshold",
@@ -274,9 +210,7 @@
       "enum": [],
       "kind": "duration",
       "name": "PENPOT_EMAIL_VERIFY_THRESHOLD",
-      "sources": [
-        "backend_config"
-      ]
+      "sources": ["backend_config"]
     },
     {
       "config_key": "error-report-webhook",
@@ -284,9 +218,7 @@
       "enum": [],
       "kind": "string",
       "name": "PENPOT_ERROR_REPORT_WEBHOOK",
-      "sources": [
-        "backend_config"
-      ]
+      "sources": ["backend_config"]
     },
     {
       "config_key": "executor-threads",
@@ -294,9 +226,7 @@
       "enum": [],
       "kind": "integer",
       "name": "PENPOT_EXECUTOR_THREADS",
-      "sources": [
-        "backend_config"
-      ]
+      "sources": ["backend_config"]
     },
     {
       "config_key": "exporter-shared-key",
@@ -304,19 +234,14 @@
       "enum": [],
       "kind": "string",
       "name": "PENPOT_EXPORTER_SHARED_KEY",
-      "sources": [
-        "backend_config"
-      ]
+      "sources": ["backend_config"]
     },
     {
       "default": "",
       "enum": [],
       "kind": "string",
       "name": "PENPOT_EXPORTER_URI",
-      "sources": [
-        "docs_config",
-        "frontend_entrypoint"
-      ]
+      "sources": ["docs_config", "frontend_entrypoint"]
     },
     {
       "config_key": "file-clean-delay",
@@ -324,24 +249,15 @@
       "enum": [],
       "kind": "duration",
       "name": "PENPOT_FILE_CLEAN_DELAY",
-      "sources": [
-        "backend_config"
-      ]
+      "sources": ["backend_config"]
     },
     {
       "config_key": "file-data-backend",
       "default": "legacy-db",
-      "enum": [
-        "db",
-        "legacy-db",
-        "storage"
-      ],
+      "enum": ["db", "legacy-db", "storage"],
       "kind": "enum",
       "name": "PENPOT_FILE_DATA_BACKEND",
-      "sources": [
-        "backend_config",
-        "docs_config"
-      ]
+      "sources": ["backend_config", "docs_config"]
     },
     {
       "config_key": "flags",
@@ -362,9 +278,7 @@
       "enum": [],
       "kind": "integer",
       "name": "PENPOT_FONT_MAX_FILE_SIZE",
-      "sources": [
-        "backend_config"
-      ]
+      "sources": ["backend_config"]
     },
     {
       "config_key": "github-client-id",
@@ -372,10 +286,7 @@
       "enum": [],
       "kind": "string",
       "name": "PENPOT_GITHUB_CLIENT_ID",
-      "sources": [
-        "backend_config",
-        "docs_config"
-      ]
+      "sources": ["backend_config", "docs_config"]
     },
     {
       "config_key": "github-client-secret",
@@ -383,10 +294,7 @@
       "enum": [],
       "kind": "string",
       "name": "PENPOT_GITHUB_CLIENT_SECRET",
-      "sources": [
-        "backend_config",
-        "docs_config"
-      ]
+      "sources": ["backend_config", "docs_config"]
     },
     {
       "config_key": "gitlab-base-uri",
@@ -394,10 +302,7 @@
       "enum": [],
       "kind": "string",
       "name": "PENPOT_GITLAB_BASE_URI",
-      "sources": [
-        "backend_config",
-        "docs_config"
-      ]
+      "sources": ["backend_config", "docs_config"]
     },
     {
       "config_key": "gitlab-client-id",
@@ -405,10 +310,7 @@
       "enum": [],
       "kind": "string",
       "name": "PENPOT_GITLAB_CLIENT_ID",
-      "sources": [
-        "backend_config",
-        "docs_config"
-      ]
+      "sources": ["backend_config", "docs_config"]
     },
     {
       "config_key": "gitlab-client-secret",
@@ -416,10 +318,7 @@
       "enum": [],
       "kind": "string",
       "name": "PENPOT_GITLAB_CLIENT_SECRET",
-      "sources": [
-        "backend_config",
-        "docs_config"
-      ]
+      "sources": ["backend_config", "docs_config"]
     },
     {
       "config_key": "google-client-id",
@@ -427,10 +326,7 @@
       "enum": [],
       "kind": "string",
       "name": "PENPOT_GOOGLE_CLIENT_ID",
-      "sources": [
-        "backend_config",
-        "docs_config"
-      ]
+      "sources": ["backend_config", "docs_config"]
     },
     {
       "config_key": "google-client-secret",
@@ -438,10 +334,7 @@
       "enum": [],
       "kind": "string",
       "name": "PENPOT_GOOGLE_CLIENT_SECRET",
-      "sources": [
-        "backend_config",
-        "docs_config"
-      ]
+      "sources": ["backend_config", "docs_config"]
     },
     {
       "config_key": "host",
@@ -449,9 +342,7 @@
       "enum": [],
       "kind": "string",
       "name": "PENPOT_HOST",
-      "sources": [
-        "backend_config"
-      ]
+      "sources": ["backend_config"]
     },
     {
       "config_key": "http-server-host",
@@ -459,9 +350,7 @@
       "enum": [],
       "kind": "string",
       "name": "PENPOT_HTTP_SERVER_HOST",
-      "sources": [
-        "backend_config"
-      ]
+      "sources": ["backend_config"]
     },
     {
       "config_key": "http-server-io-threads",
@@ -469,9 +358,7 @@
       "enum": [],
       "kind": "integer",
       "name": "PENPOT_HTTP_SERVER_IO_THREADS",
-      "sources": [
-        "backend_config"
-      ]
+      "sources": ["backend_config"]
     },
     {
       "config_key": "http-server-max-body-size",
@@ -479,20 +366,14 @@
       "enum": [],
       "kind": "integer",
       "name": "PENPOT_HTTP_SERVER_MAX_BODY_SIZE",
-      "sources": [
-        "backend_config",
-        "compose",
-        "frontend_entrypoint"
-      ]
+      "sources": ["backend_config", "compose", "frontend_entrypoint"]
     },
     {
       "default": "367001600",
       "enum": [],
       "kind": "string",
       "name": "PENPOT_HTTP_SERVER_MAX_MULTIPART_BODY_SIZE",
-      "sources": [
-        "compose"
-      ]
+      "sources": ["compose"]
     },
     {
       "config_key": "http-server-max-worker-threads",
@@ -500,9 +381,7 @@
       "enum": [],
       "kind": "integer",
       "name": "PENPOT_HTTP_SERVER_MAX_WORKER_THREADS",
-      "sources": [
-        "backend_config"
-      ]
+      "sources": ["backend_config"]
     },
     {
       "config_key": "http-server-port",
@@ -510,9 +389,7 @@
       "enum": [],
       "kind": "integer",
       "name": "PENPOT_HTTP_SERVER_PORT",
-      "sources": [
-        "backend_config"
-      ]
+      "sources": ["backend_config"]
     },
     {
       "config_key": "initial-project-skey",
@@ -520,18 +397,14 @@
       "enum": [],
       "kind": "string",
       "name": "PENPOT_INITIAL_PROJECT_SKEY",
-      "sources": [
-        "backend_default"
-      ]
+      "sources": ["backend_default"]
     },
     {
       "default": "",
       "enum": [],
       "kind": "string",
       "name": "PENPOT_INTERNAL_RESOLVER",
-      "sources": [
-        "frontend_entrypoint"
-      ]
+      "sources": ["frontend_entrypoint"]
     },
     {
       "config_key": "ldap-attrs-email",
@@ -539,10 +412,7 @@
       "enum": [],
       "kind": "string",
       "name": "PENPOT_LDAP_ATTRS_EMAIL",
-      "sources": [
-        "backend_config",
-        "docs_config"
-      ]
+      "sources": ["backend_config", "docs_config"]
     },
     {
       "config_key": "ldap-attrs-fullname",
@@ -550,19 +420,14 @@
       "enum": [],
       "kind": "string",
       "name": "PENPOT_LDAP_ATTRS_FULLNAME",
-      "sources": [
-        "backend_config",
-        "docs_config"
-      ]
+      "sources": ["backend_config", "docs_config"]
     },
     {
       "default": "",
       "enum": [],
       "kind": "string",
       "name": "PENPOT_LDAP_ATTRS_PHOTO",
-      "sources": [
-        "docs_config"
-      ]
+      "sources": ["docs_config"]
     },
     {
       "config_key": "ldap-attrs-username",
@@ -570,10 +435,7 @@
       "enum": [],
       "kind": "string",
       "name": "PENPOT_LDAP_ATTRS_USERNAME",
-      "sources": [
-        "backend_config",
-        "docs_config"
-      ]
+      "sources": ["backend_config", "docs_config"]
     },
     {
       "config_key": "ldap-base-dn",
@@ -581,10 +443,7 @@
       "enum": [],
       "kind": "string",
       "name": "PENPOT_LDAP_BASE_DN",
-      "sources": [
-        "backend_config",
-        "docs_config"
-      ]
+      "sources": ["backend_config", "docs_config"]
     },
     {
       "config_key": "ldap-bind-dn",
@@ -592,10 +451,7 @@
       "enum": [],
       "kind": "string",
       "name": "PENPOT_LDAP_BIND_DN",
-      "sources": [
-        "backend_config",
-        "docs_config"
-      ]
+      "sources": ["backend_config", "docs_config"]
     },
     {
       "config_key": "ldap-bind-password",
@@ -603,10 +459,7 @@
       "enum": [],
       "kind": "string",
       "name": "PENPOT_LDAP_BIND_PASSWORD",
-      "sources": [
-        "backend_config",
-        "docs_config"
-      ]
+      "sources": ["backend_config", "docs_config"]
     },
     {
       "config_key": "ldap-host",
@@ -614,10 +467,7 @@
       "enum": [],
       "kind": "string",
       "name": "PENPOT_LDAP_HOST",
-      "sources": [
-        "backend_config",
-        "docs_config"
-      ]
+      "sources": ["backend_config", "docs_config"]
     },
     {
       "config_key": "ldap-port",
@@ -625,10 +475,7 @@
       "enum": [],
       "kind": "integer",
       "name": "PENPOT_LDAP_PORT",
-      "sources": [
-        "backend_config",
-        "docs_config"
-      ]
+      "sources": ["backend_config", "docs_config"]
     },
     {
       "config_key": "ldap-ssl",
@@ -636,10 +483,7 @@
       "enum": [],
       "kind": "boolean",
       "name": "PENPOT_LDAP_SSL",
-      "sources": [
-        "backend_config",
-        "docs_config"
-      ]
+      "sources": ["backend_config", "docs_config"]
     },
     {
       "config_key": "ldap-starttls",
@@ -647,10 +491,7 @@
       "enum": [],
       "kind": "boolean",
       "name": "PENPOT_LDAP_STARTTLS",
-      "sources": [
-        "backend_config",
-        "docs_config"
-      ]
+      "sources": ["backend_config", "docs_config"]
     },
     {
       "config_key": "ldap-user-query",
@@ -658,46 +499,35 @@
       "enum": [],
       "kind": "string",
       "name": "PENPOT_LDAP_USER_QUERY",
-      "sources": [
-        "backend_config",
-        "docs_config"
-      ]
+      "sources": ["backend_config", "docs_config"]
     },
     {
       "default": "",
       "enum": [],
       "kind": "string",
       "name": "PENPOT_LOGGERS_LOKI_ENVIRONMENT",
-      "sources": [
-        "mcp"
-      ]
+      "sources": ["mcp"]
     },
     {
       "default": "",
       "enum": [],
       "kind": "string",
       "name": "PENPOT_LOGGERS_LOKI_INSTANCE",
-      "sources": [
-        "mcp"
-      ]
+      "sources": ["mcp"]
     },
     {
       "default": "",
       "enum": [],
       "kind": "string",
       "name": "PENPOT_LOGGERS_LOKI_JOB",
-      "sources": [
-        "mcp"
-      ]
+      "sources": ["mcp"]
     },
     {
       "default": "",
       "enum": [],
       "kind": "string",
       "name": "PENPOT_LOGGERS_LOKI_URI",
-      "sources": [
-        "mcp"
-      ]
+      "sources": ["mcp"]
     },
     {
       "config_key": "management-api-key",
@@ -705,90 +535,70 @@
       "enum": [],
       "kind": "string",
       "name": "PENPOT_MANAGEMENT_API_KEY",
-      "sources": [
-        "backend_config"
-      ]
+      "sources": ["backend_config"]
     },
     {
       "default": "",
       "enum": [],
       "kind": "string",
       "name": "PENPOT_MCP_LOG_DIR",
-      "sources": [
-        "mcp"
-      ]
+      "sources": ["mcp"]
     },
     {
       "default": "",
       "enum": [],
       "kind": "string",
       "name": "PENPOT_MCP_LOG_LEVEL",
-      "sources": [
-        "mcp"
-      ]
+      "sources": ["mcp"]
     },
     {
       "default": "",
       "enum": [],
       "kind": "string",
       "name": "PENPOT_MCP_REMOTE_MODE",
-      "sources": [
-        "mcp"
-      ]
+      "sources": ["mcp"]
     },
     {
       "default": "",
       "enum": [],
       "kind": "string",
       "name": "PENPOT_MCP_REPL_PORT",
-      "sources": [
-        "mcp"
-      ]
+      "sources": ["mcp"]
     },
     {
       "default": "",
       "enum": [],
       "kind": "string",
       "name": "PENPOT_MCP_SERVER_HOST",
-      "sources": [
-        "mcp"
-      ]
+      "sources": ["mcp"]
     },
     {
       "default": "",
       "enum": [],
       "kind": "string",
       "name": "PENPOT_MCP_SERVER_PORT",
-      "sources": [
-        "mcp"
-      ]
+      "sources": ["mcp"]
     },
     {
       "default": "",
       "enum": [],
       "kind": "string",
       "name": "PENPOT_MCP_URI",
-      "sources": [
-        "frontend_entrypoint"
-      ]
+      "sources": ["frontend_entrypoint"]
     },
     {
       "default": "",
       "enum": [],
       "kind": "string",
       "name": "PENPOT_MCP_URI_WS",
-      "sources": [
-        "frontend_entrypoint"
-      ]
+      "sources": ["frontend_entrypoint"]
     },
     {
       "default": "",
       "enum": [],
       "kind": "string",
       "name": "PENPOT_MCP_WEBSOCKET_PORT",
-      "sources": [
-        "mcp"
-      ]
+      "sources": ["mcp"]
     },
     {
       "config_key": "media-directory",
@@ -796,9 +606,7 @@
       "enum": [],
       "kind": "string",
       "name": "PENPOT_MEDIA_DIRECTORY",
-      "sources": [
-        "backend_config"
-      ]
+      "sources": ["backend_config"]
     },
     {
       "config_key": "media-max-file-size",
@@ -806,9 +614,7 @@
       "enum": [],
       "kind": "integer",
       "name": "PENPOT_MEDIA_MAX_FILE_SIZE",
-      "sources": [
-        "backend_config"
-      ]
+      "sources": ["backend_config"]
     },
     {
       "config_key": "media-uri",
@@ -816,9 +622,7 @@
       "enum": [],
       "kind": "string",
       "name": "PENPOT_MEDIA_URI",
-      "sources": [
-        "backend_config"
-      ]
+      "sources": ["backend_config"]
     },
     {
       "config_key": "netty-io-threads",
@@ -826,9 +630,7 @@
       "enum": [],
       "kind": "integer",
       "name": "PENPOT_NETTY_IO_THREADS",
-      "sources": [
-        "backend_config"
-      ]
+      "sources": ["backend_config"]
     },
     {
       "config_key": "nexus-shared-key",
@@ -836,9 +638,7 @@
       "enum": [],
       "kind": "string",
       "name": "PENPOT_NEXUS_SHARED_KEY",
-      "sources": [
-        "backend_config"
-      ]
+      "sources": ["backend_config"]
     },
     {
       "config_key": "nitrate-backend-uri",
@@ -846,9 +646,7 @@
       "enum": [],
       "kind": "uri",
       "name": "PENPOT_NITRATE_BACKEND_URI",
-      "sources": [
-        "backend_config"
-      ]
+      "sources": ["backend_config"]
     },
     {
       "config_key": "nitrate-shared-key",
@@ -856,27 +654,21 @@
       "enum": [],
       "kind": "string",
       "name": "PENPOT_NITRATE_SHARED_KEY",
-      "sources": [
-        "backend_config"
-      ]
+      "sources": ["backend_config"]
     },
     {
       "default": "",
       "enum": [],
       "kind": "string",
       "name": "PENPOT_NITRATE_URI",
-      "sources": [
-        "frontend_entrypoint"
-      ]
+      "sources": ["frontend_entrypoint"]
     },
     {
       "default": "",
       "enum": [],
       "kind": "string",
       "name": "PENPOT_OBJECTS_STORAGE_",
-      "sources": [
-        "docs_config"
-      ]
+      "sources": ["docs_config"]
     },
     {
       "config_key": "objects-storage-backend",
@@ -884,11 +676,7 @@
       "enum": [],
       "kind": "string",
       "name": "PENPOT_OBJECTS_STORAGE_BACKEND",
-      "sources": [
-        "backend_config",
-        "compose",
-        "docs_config"
-      ]
+      "sources": ["backend_config", "compose", "docs_config"]
     },
     {
       "config_key": "objects-storage-fs-directory",
@@ -896,11 +684,7 @@
       "enum": [],
       "kind": "string",
       "name": "PENPOT_OBJECTS_STORAGE_FS_DIRECTORY",
-      "sources": [
-        "backend_config",
-        "compose",
-        "docs_config"
-      ]
+      "sources": ["backend_config", "compose", "docs_config"]
     },
     {
       "config_key": "objects-storage-s3-bucket",
@@ -908,10 +692,7 @@
       "enum": [],
       "kind": "string",
       "name": "PENPOT_OBJECTS_STORAGE_S3_BUCKET",
-      "sources": [
-        "backend_config",
-        "docs_config"
-      ]
+      "sources": ["backend_config", "docs_config"]
     },
     {
       "config_key": "objects-storage-s3-endpoint",
@@ -919,10 +700,7 @@
       "enum": [],
       "kind": "uri",
       "name": "PENPOT_OBJECTS_STORAGE_S3_ENDPOINT",
-      "sources": [
-        "backend_config",
-        "docs_config"
-      ]
+      "sources": ["backend_config", "docs_config"]
     },
     {
       "config_key": "objects-storage-s3-region",
@@ -930,10 +708,7 @@
       "enum": [],
       "kind": "string",
       "name": "PENPOT_OBJECTS_STORAGE_S3_REGION",
-      "sources": [
-        "backend_config",
-        "docs_config"
-      ]
+      "sources": ["backend_config", "docs_config"]
     },
     {
       "config_key": "oidc-auth-uri",
@@ -941,10 +716,7 @@
       "enum": [],
       "kind": "string",
       "name": "PENPOT_OIDC_AUTH_URI",
-      "sources": [
-        "backend_config",
-        "docs_config"
-      ]
+      "sources": ["backend_config", "docs_config"]
     },
     {
       "config_key": "oidc-base-uri",
@@ -952,10 +724,7 @@
       "enum": [],
       "kind": "string",
       "name": "PENPOT_OIDC_BASE_URI",
-      "sources": [
-        "backend_config",
-        "docs_config"
-      ]
+      "sources": ["backend_config", "docs_config"]
     },
     {
       "config_key": "oidc-client-id",
@@ -963,10 +732,7 @@
       "enum": [],
       "kind": "string",
       "name": "PENPOT_OIDC_CLIENT_ID",
-      "sources": [
-        "backend_config",
-        "docs_config"
-      ]
+      "sources": ["backend_config", "docs_config"]
     },
     {
       "config_key": "oidc-client-secret",
@@ -974,10 +740,7 @@
       "enum": [],
       "kind": "string",
       "name": "PENPOT_OIDC_CLIENT_SECRET",
-      "sources": [
-        "backend_config",
-        "docs_config"
-      ]
+      "sources": ["backend_config", "docs_config"]
     },
     {
       "config_key": "oidc-email-attr",
@@ -985,10 +748,7 @@
       "enum": [],
       "kind": "string",
       "name": "PENPOT_OIDC_EMAIL_ATTR",
-      "sources": [
-        "backend_config",
-        "docs_config"
-      ]
+      "sources": ["backend_config", "docs_config"]
     },
     {
       "config_key": "oidc-jwks-uri",
@@ -996,9 +756,7 @@
       "enum": [],
       "kind": "string",
       "name": "PENPOT_OIDC_JWKS_URI",
-      "sources": [
-        "backend_config"
-      ]
+      "sources": ["backend_config"]
     },
     {
       "config_key": "oidc-name-attr",
@@ -1006,10 +764,7 @@
       "enum": [],
       "kind": "string",
       "name": "PENPOT_OIDC_NAME_ATTR",
-      "sources": [
-        "backend_config",
-        "docs_config"
-      ]
+      "sources": ["backend_config", "docs_config"]
     },
     {
       "config_key": "oidc-roles",
@@ -1017,10 +772,7 @@
       "enum": [],
       "kind": "string",
       "name": "PENPOT_OIDC_ROLES",
-      "sources": [
-        "backend_config",
-        "docs_config"
-      ]
+      "sources": ["backend_config", "docs_config"]
     },
     {
       "config_key": "oidc-roles-attr",
@@ -1028,10 +780,7 @@
       "enum": [],
       "kind": "string",
       "name": "PENPOT_OIDC_ROLES_ATTR",
-      "sources": [
-        "backend_config",
-        "docs_config"
-      ]
+      "sources": ["backend_config", "docs_config"]
     },
     {
       "config_key": "oidc-scopes",
@@ -1039,10 +788,7 @@
       "enum": [],
       "kind": "string",
       "name": "PENPOT_OIDC_SCOPES",
-      "sources": [
-        "backend_config",
-        "docs_config"
-      ]
+      "sources": ["backend_config", "docs_config"]
     },
     {
       "config_key": "oidc-token-uri",
@@ -1050,25 +796,15 @@
       "enum": [],
       "kind": "string",
       "name": "PENPOT_OIDC_TOKEN_URI",
-      "sources": [
-        "backend_config",
-        "docs_config"
-      ]
+      "sources": ["backend_config", "docs_config"]
     },
     {
       "config_key": "oidc-user-info-source",
       "default": "",
-      "enum": [
-        "auto",
-        "userinfo",
-        "token"
-      ],
+      "enum": ["auto", "userinfo", "token"],
       "kind": "enum",
       "name": "PENPOT_OIDC_USER_INFO_SOURCE",
-      "sources": [
-        "backend_config",
-        "docs_config"
-      ]
+      "sources": ["backend_config", "docs_config"]
     },
     {
       "config_key": "oidc-user-uri",
@@ -1076,10 +812,7 @@
       "enum": [],
       "kind": "string",
       "name": "PENPOT_OIDC_USER_URI",
-      "sources": [
-        "backend_config",
-        "docs_config"
-      ]
+      "sources": ["backend_config", "docs_config"]
     },
     {
       "config_key": "prepl-host",
@@ -1087,9 +820,7 @@
       "enum": [],
       "kind": "string",
       "name": "PENPOT_PREPL_HOST",
-      "sources": [
-        "backend_config"
-      ]
+      "sources": ["backend_config"]
     },
     {
       "config_key": "prepl-port",
@@ -1097,9 +828,7 @@
       "enum": [],
       "kind": "integer",
       "name": "PENPOT_PREPL_PORT",
-      "sources": [
-        "backend_config"
-      ]
+      "sources": ["backend_config"]
     },
     {
       "config_key": "profile-bounce-max-age",
@@ -1107,9 +836,7 @@
       "enum": [],
       "kind": "duration",
       "name": "PENPOT_PROFILE_BOUNCE_MAX_AGE",
-      "sources": [
-        "backend_config"
-      ]
+      "sources": ["backend_config"]
     },
     {
       "config_key": "profile-bounce-threshold",
@@ -1117,9 +844,7 @@
       "enum": [],
       "kind": "integer",
       "name": "PENPOT_PROFILE_BOUNCE_THRESHOLD",
-      "sources": [
-        "backend_config"
-      ]
+      "sources": ["backend_config"]
     },
     {
       "config_key": "profile-complaint-max-age",
@@ -1127,9 +852,7 @@
       "enum": [],
       "kind": "duration",
       "name": "PENPOT_PROFILE_COMPLAINT_MAX_AGE",
-      "sources": [
-        "backend_config"
-      ]
+      "sources": ["backend_config"]
     },
     {
       "config_key": "profile-complaint-threshold",
@@ -1137,9 +860,7 @@
       "enum": [],
       "kind": "integer",
       "name": "PENPOT_PROFILE_COMPLAINT_THRESHOLD",
-      "sources": [
-        "backend_config"
-      ]
+      "sources": ["backend_config"]
     },
     {
       "config_key": "public-uri",
@@ -1160,9 +881,7 @@
       "enum": [],
       "kind": "integer",
       "name": "PENPOT_QUOTES_ACCESS_TOKENS_PER_PROFILE",
-      "sources": [
-        "backend_config"
-      ]
+      "sources": ["backend_config"]
     },
     {
       "config_key": "quotes-comments-per-file",
@@ -1170,9 +889,7 @@
       "enum": [],
       "kind": "integer",
       "name": "PENPOT_QUOTES_COMMENTS_PER_FILE",
-      "sources": [
-        "backend_config"
-      ]
+      "sources": ["backend_config"]
     },
     {
       "config_key": "quotes-comment-threads-per-file",
@@ -1180,9 +897,7 @@
       "enum": [],
       "kind": "integer",
       "name": "PENPOT_QUOTES_COMMENT_THREADS_PER_FILE",
-      "sources": [
-        "backend_config"
-      ]
+      "sources": ["backend_config"]
     },
     {
       "config_key": "quotes-files-per-project",
@@ -1190,9 +905,7 @@
       "enum": [],
       "kind": "integer",
       "name": "PENPOT_QUOTES_FILES_PER_PROJECT",
-      "sources": [
-        "backend_config"
-      ]
+      "sources": ["backend_config"]
     },
     {
       "config_key": "quotes-files-per-team",
@@ -1200,9 +913,7 @@
       "enum": [],
       "kind": "integer",
       "name": "PENPOT_QUOTES_FILES_PER_TEAM",
-      "sources": [
-        "backend_config"
-      ]
+      "sources": ["backend_config"]
     },
     {
       "config_key": "quotes-font-variants-per-team",
@@ -1210,9 +921,7 @@
       "enum": [],
       "kind": "integer",
       "name": "PENPOT_QUOTES_FONT_VARIANTS_PER_TEAM",
-      "sources": [
-        "backend_config"
-      ]
+      "sources": ["backend_config"]
     },
     {
       "config_key": "quotes-invitations-per-team",
@@ -1220,9 +929,7 @@
       "enum": [],
       "kind": "integer",
       "name": "PENPOT_QUOTES_INVITATIONS_PER_TEAM",
-      "sources": [
-        "backend_config"
-      ]
+      "sources": ["backend_config"]
     },
     {
       "config_key": "quotes-profiles-per-team",
@@ -1230,9 +937,7 @@
       "enum": [],
       "kind": "integer",
       "name": "PENPOT_QUOTES_PROFILES_PER_TEAM",
-      "sources": [
-        "backend_config"
-      ]
+      "sources": ["backend_config"]
     },
     {
       "config_key": "quotes-projects-per-team",
@@ -1240,9 +945,7 @@
       "enum": [],
       "kind": "integer",
       "name": "PENPOT_QUOTES_PROJECTS_PER_TEAM",
-      "sources": [
-        "backend_config"
-      ]
+      "sources": ["backend_config"]
     },
     {
       "config_key": "quotes-snapshots-per-file",
@@ -1250,9 +953,7 @@
       "enum": [],
       "kind": "integer",
       "name": "PENPOT_QUOTES_SNAPSHOTS_PER_FILE",
-      "sources": [
-        "backend_config"
-      ]
+      "sources": ["backend_config"]
     },
     {
       "config_key": "quotes-snapshots-per-team",
@@ -1260,9 +961,7 @@
       "enum": [],
       "kind": "integer",
       "name": "PENPOT_QUOTES_SNAPSHOTS_PER_TEAM",
-      "sources": [
-        "backend_config"
-      ]
+      "sources": ["backend_config"]
     },
     {
       "config_key": "quotes-teams-per-profile",
@@ -1270,9 +969,7 @@
       "enum": [],
       "kind": "integer",
       "name": "PENPOT_QUOTES_TEAMS_PER_PROFILE",
-      "sources": [
-        "backend_config"
-      ]
+      "sources": ["backend_config"]
     },
     {
       "config_key": "quotes-team-access-requests-per-requester",
@@ -1280,9 +977,7 @@
       "enum": [],
       "kind": "integer",
       "name": "PENPOT_QUOTES_TEAM_ACCESS_REQUESTS_PER_REQUESTER",
-      "sources": [
-        "backend_config"
-      ]
+      "sources": ["backend_config"]
     },
     {
       "config_key": "quotes-team-access-requests-per-team",
@@ -1290,9 +985,7 @@
       "enum": [],
       "kind": "integer",
       "name": "PENPOT_QUOTES_TEAM_ACCESS_REQUESTS_PER_TEAM",
-      "sources": [
-        "backend_config"
-      ]
+      "sources": ["backend_config"]
     },
     {
       "config_key": "quotes-upload-chunks-per-session",
@@ -1300,9 +993,7 @@
       "enum": [],
       "kind": "integer",
       "name": "PENPOT_QUOTES_UPLOAD_CHUNKS_PER_SESSION",
-      "sources": [
-        "backend_config"
-      ]
+      "sources": ["backend_config"]
     },
     {
       "config_key": "quotes-upload-sessions-per-profile",
@@ -1310,9 +1001,7 @@
       "enum": [],
       "kind": "integer",
       "name": "PENPOT_QUOTES_UPLOAD_SESSIONS_PER_PROFILE",
-      "sources": [
-        "backend_config"
-      ]
+      "sources": ["backend_config"]
     },
     {
       "config_key": "redis-uri",
@@ -1320,11 +1009,7 @@
       "enum": [],
       "kind": "uri",
       "name": "PENPOT_REDIS_URI",
-      "sources": [
-        "backend_config",
-        "compose",
-        "docs_config"
-      ]
+      "sources": ["backend_config", "compose", "docs_config"]
     },
     {
       "config_key": "registration-domain-whitelist",
@@ -1332,10 +1017,7 @@
       "enum": [],
       "kind": "string",
       "name": "PENPOT_REGISTRATION_DOMAIN_WHITELIST",
-      "sources": [
-        "backend_config",
-        "docs_config"
-      ]
+      "sources": ["backend_config", "docs_config"]
     },
     {
       "config_key": "rpc-climit-config",
@@ -1343,9 +1025,7 @@
       "enum": [],
       "kind": "path",
       "name": "PENPOT_RPC_CLIMIT_CONFIG",
-      "sources": [
-        "backend_config"
-      ]
+      "sources": ["backend_config"]
     },
     {
       "config_key": "rpc-rlimit-config",
@@ -1353,9 +1033,7 @@
       "enum": [],
       "kind": "path",
       "name": "PENPOT_RPC_RLIMIT_CONFIG",
-      "sources": [
-        "backend_config"
-      ]
+      "sources": ["backend_config"]
     },
     {
       "config_key": "scheduled-executor-parallelism",
@@ -1363,9 +1041,7 @@
       "enum": [],
       "kind": "integer",
       "name": "PENPOT_SCHEDULED_EXECUTOR_PARALLELISM",
-      "sources": [
-        "backend_config"
-      ]
+      "sources": ["backend_config"]
     },
     {
       "config_key": "secret-key",
@@ -1373,11 +1049,7 @@
       "enum": [],
       "kind": "string",
       "name": "PENPOT_SECRET_KEY",
-      "sources": [
-        "backend_config",
-        "compose",
-        "docs_config"
-      ]
+      "sources": ["backend_config", "compose", "docs_config"]
     },
     {
       "config_key": "smtp-default-from",
@@ -1385,11 +1057,7 @@
       "enum": [],
       "kind": "string",
       "name": "PENPOT_SMTP_DEFAULT_FROM",
-      "sources": [
-        "backend_config",
-        "compose",
-        "docs_config"
-      ]
+      "sources": ["backend_config", "compose", "docs_config"]
     },
     {
       "config_key": "smtp-default-reply-to",
@@ -1397,11 +1065,7 @@
       "enum": [],
       "kind": "string",
       "name": "PENPOT_SMTP_DEFAULT_REPLY_TO",
-      "sources": [
-        "backend_config",
-        "compose",
-        "docs_config"
-      ]
+      "sources": ["backend_config", "compose", "docs_config"]
     },
     {
       "config_key": "smtp-host",
@@ -1409,11 +1073,7 @@
       "enum": [],
       "kind": "string",
       "name": "PENPOT_SMTP_HOST",
-      "sources": [
-        "backend_config",
-        "compose",
-        "docs_config"
-      ]
+      "sources": ["backend_config", "compose", "docs_config"]
     },
     {
       "config_key": "smtp-password",
@@ -1421,11 +1081,7 @@
       "enum": [],
       "kind": "string",
       "name": "PENPOT_SMTP_PASSWORD",
-      "sources": [
-        "backend_config",
-        "compose",
-        "docs_config"
-      ]
+      "sources": ["backend_config", "compose", "docs_config"]
     },
     {
       "config_key": "smtp-port",
@@ -1433,11 +1089,7 @@
       "enum": [],
       "kind": "integer",
       "name": "PENPOT_SMTP_PORT",
-      "sources": [
-        "backend_config",
-        "compose",
-        "docs_config"
-      ]
+      "sources": ["backend_config", "compose", "docs_config"]
     },
     {
       "config_key": "smtp-ssl",
@@ -1445,10 +1097,7 @@
       "enum": [],
       "kind": "boolean",
       "name": "PENPOT_SMTP_SSL",
-      "sources": [
-        "backend_config",
-        "compose"
-      ]
+      "sources": ["backend_config", "compose"]
     },
     {
       "config_key": "smtp-tls",
@@ -1456,11 +1105,7 @@
       "enum": [],
       "kind": "boolean",
       "name": "PENPOT_SMTP_TLS",
-      "sources": [
-        "backend_config",
-        "compose",
-        "docs_config"
-      ]
+      "sources": ["backend_config", "compose", "docs_config"]
     },
     {
       "config_key": "smtp-username",
@@ -1468,11 +1113,7 @@
       "enum": [],
       "kind": "string",
       "name": "PENPOT_SMTP_USERNAME",
-      "sources": [
-        "backend_config",
-        "compose",
-        "docs_config"
-      ]
+      "sources": ["backend_config", "compose", "docs_config"]
     },
     {
       "config_key": "ssrf-allowed-hosts",
@@ -1480,9 +1121,7 @@
       "enum": [],
       "kind": "string",
       "name": "PENPOT_SSRF_ALLOWED_HOSTS",
-      "sources": [
-        "backend_config"
-      ]
+      "sources": ["backend_config"]
     },
     {
       "config_key": "ssrf-extra-blocked-cidrs",
@@ -1490,18 +1129,14 @@
       "enum": [],
       "kind": "string",
       "name": "PENPOT_SSRF_EXTRA_BLOCKED_CIDRS",
-      "sources": [
-        "backend_config"
-      ]
+      "sources": ["backend_config"]
     },
     {
       "default": "",
       "enum": [],
       "kind": "string",
       "name": "PENPOT_STORAGE_ASSETS_",
-      "sources": [
-        "docs_config"
-      ]
+      "sources": ["docs_config"]
     },
     {
       "config_key": "storage-assets-fs-directory",
@@ -1509,9 +1144,7 @@
       "enum": [],
       "kind": "string",
       "name": "PENPOT_STORAGE_ASSETS_FS_DIRECTORY",
-      "sources": [
-        "backend_config"
-      ]
+      "sources": ["backend_config"]
     },
     {
       "config_key": "storage-assets-s3-bucket",
@@ -1519,9 +1152,7 @@
       "enum": [],
       "kind": "string",
       "name": "PENPOT_STORAGE_ASSETS_S3_BUCKET",
-      "sources": [
-        "backend_config"
-      ]
+      "sources": ["backend_config"]
     },
     {
       "config_key": "storage-assets-s3-endpoint",
@@ -1529,9 +1160,7 @@
       "enum": [],
       "kind": "uri",
       "name": "PENPOT_STORAGE_ASSETS_S3_ENDPOINT",
-      "sources": [
-        "backend_config"
-      ]
+      "sources": ["backend_config"]
     },
     {
       "config_key": "storage-assets-s3-region",
@@ -1539,9 +1168,7 @@
       "enum": [],
       "kind": "string",
       "name": "PENPOT_STORAGE_ASSETS_S3_REGION",
-      "sources": [
-        "backend_config"
-      ]
+      "sources": ["backend_config"]
     },
     {
       "config_key": "telemetry-enabled",
@@ -1549,19 +1176,14 @@
       "enum": [],
       "kind": "boolean",
       "name": "PENPOT_TELEMETRY_ENABLED",
-      "sources": [
-        "backend_config",
-        "compose"
-      ]
+      "sources": ["backend_config", "compose"]
     },
     {
       "default": "compose",
       "enum": [],
       "kind": "string",
       "name": "PENPOT_TELEMETRY_REFERER",
-      "sources": [
-        "compose"
-      ]
+      "sources": ["compose"]
     },
     {
       "config_key": "telemetry-uri",
@@ -1569,9 +1191,7 @@
       "enum": [],
       "kind": "string",
       "name": "PENPOT_TELEMETRY_URI",
-      "sources": [
-        "backend_config"
-      ]
+      "sources": ["backend_config"]
     },
     {
       "config_key": "telemetry-with-taiga",
@@ -1579,9 +1199,7 @@
       "enum": [],
       "kind": "boolean",
       "name": "PENPOT_TELEMETRY_WITH_TAIGA",
-      "sources": [
-        "backend_config"
-      ]
+      "sources": ["backend_config"]
     },
     {
       "config_key": "tenant",
@@ -1589,9 +1207,7 @@
       "enum": [],
       "kind": "string",
       "name": "PENPOT_TENANT",
-      "sources": [
-        "backend_config"
-      ]
+      "sources": ["backend_config"]
     },
     {
       "config_key": "urepl-host",
@@ -1599,9 +1215,7 @@
       "enum": [],
       "kind": "string",
       "name": "PENPOT_UREPL_HOST",
-      "sources": [
-        "backend_config"
-      ]
+      "sources": ["backend_config"]
     },
     {
       "config_key": "urepl-port",
@@ -1609,9 +1223,7 @@
       "enum": [],
       "kind": "integer",
       "name": "PENPOT_UREPL_PORT",
-      "sources": [
-        "backend_config"
-      ]
+      "sources": ["backend_config"]
     },
     {
       "config_key": "user-feedback-destination",
@@ -1619,9 +1231,7 @@
       "enum": [],
       "kind": "string",
       "name": "PENPOT_USER_FEEDBACK_DESTINATION",
-      "sources": [
-        "backend_config"
-      ]
+      "sources": ["backend_config"]
     },
     {
       "config_key": "worker-default-parallelism",
@@ -1629,9 +1239,7 @@
       "enum": [],
       "kind": "integer",
       "name": "PENPOT_WORKER_DEFAULT_PARALLELISM",
-      "sources": [
-        "backend_config"
-      ]
+      "sources": ["backend_config"]
     },
     {
       "config_key": "worker-webhook-parallelism",
@@ -1639,529 +1247,379 @@
       "enum": [],
       "kind": "integer",
       "name": "PENPOT_WORKER_WEBHOOK_PARALLELISM",
-      "sources": [
-        "backend_config"
-      ]
+      "sources": ["backend_config"]
     }
   ],
   "flags": [
     {
       "default_state": "upstream-default",
       "name": "access-tokens",
-      "sources": [
-        "flags"
-      ]
+      "sources": ["flags"]
     },
     {
       "default_state": "upstream-default",
       "name": "audit-log",
-      "sources": [
-        "flags"
-      ]
+      "sources": ["flags"]
     },
     {
       "default_state": "upstream-default",
       "name": "audit-log-archive",
-      "sources": [
-        "flags"
-      ]
+      "sources": ["flags"]
     },
     {
       "default_state": "upstream-default",
       "name": "audit-log-gc",
-      "sources": [
-        "flags"
-      ]
+      "sources": ["flags"]
     },
     {
       "default_state": "upstream-default",
       "name": "audit-log-logger",
-      "sources": [
-        "flags"
-      ]
+      "sources": ["flags"]
     },
     {
       "default_state": "upstream-default",
       "name": "auto-file-snapshot",
-      "sources": [
-        "flags"
-      ]
+      "sources": ["flags"]
     },
     {
       "default_state": "enabled",
       "name": "backend-api-doc",
-      "sources": [
-        "flags"
-      ]
+      "sources": ["flags"]
     },
     {
       "default_state": "enabled",
       "name": "backend-openapi-doc",
-      "sources": [
-        "flags"
-      ]
+      "sources": ["flags"]
     },
     {
       "default_state": "enabled",
       "name": "backend-svgo",
-      "sources": [
-        "flags"
-      ]
+      "sources": ["flags"]
     },
     {
       "default_state": "enabled",
       "name": "backend-worker",
-      "sources": [
-        "flags"
-      ]
+      "sources": ["flags"]
     },
     {
       "default_state": "upstream-default",
       "name": "client-header-check-middleware",
-      "sources": [
-        "flags"
-      ]
+      "sources": ["flags"]
     },
     {
       "default_state": "enabled",
       "name": "component-thumbnails",
-      "sources": [
-        "flags"
-      ]
+      "sources": ["flags"]
     },
     {
       "default_state": "upstream-default",
       "name": "cors",
-      "sources": [
-        "flags"
-      ]
+      "sources": ["flags"]
     },
     {
       "default_state": "enabled",
       "name": "dashboard-templates-section",
-      "sources": [
-        "flags"
-      ]
+      "sources": ["flags"]
     },
     {
       "default_state": "upstream-default",
       "name": "demo-users",
-      "sources": [
-        "flags"
-      ]
+      "sources": ["flags"]
     },
     {
       "default_state": "upstream-default",
       "name": "demo-warning",
-      "sources": [
-        "flags"
-      ]
+      "sources": ["flags"]
     },
     {
       "default_state": "upstream-default",
       "name": "email-blacklist",
-      "sources": [
-        "flags"
-      ]
+      "sources": ["flags"]
     },
     {
       "default_state": "enabled",
       "name": "email-verification",
-      "sources": [
-        "flags"
-      ]
+      "sources": ["flags"]
     },
     {
       "default_state": "upstream-default",
       "name": "email-whitelist",
-      "sources": [
-        "flags"
-      ]
+      "sources": ["flags"]
     },
     {
       "default_state": "enabled",
       "name": "export-file-v3",
-      "sources": [
-        "flags"
-      ]
+      "sources": ["flags"]
     },
     {
       "default_state": "enabled",
       "name": "exporter-svgo",
-      "sources": [
-        "flags"
-      ]
+      "sources": ["flags"]
     },
     {
       "default_state": "enabled",
       "name": "feature-fdata-objects-map",
-      "sources": [
-        "flags"
-      ]
+      "sources": ["flags"]
     },
     {
       "default_state": "upstream-default",
       "name": "file-schema-validation",
-      "sources": [
-        "flags"
-      ]
+      "sources": ["flags"]
     },
     {
       "default_state": "upstream-default",
       "name": "file-validation",
-      "sources": [
-        "flags"
-      ]
+      "sources": ["flags"]
     },
     {
       "default_state": "enabled",
       "name": "frontend-svgo",
-      "sources": [
-        "flags"
-      ]
+      "sources": ["flags"]
     },
     {
       "default_state": "enabled",
       "name": "google-fonts-provider",
-      "sources": [
-        "flags"
-      ]
+      "sources": ["flags"]
     },
     {
       "default_state": "upstream-default",
       "name": "hide-release-modal",
-      "sources": [
-        "flags"
-      ]
+      "sources": ["flags"]
     },
     {
       "default_state": "enabled",
       "name": "inspect-styles",
-      "sources": [
-        "flags"
-      ]
+      "sources": ["flags"]
     },
     {
       "default_state": "upstream-default",
       "name": "log-emails",
-      "sources": [
-        "flags"
-      ]
+      "sources": ["flags"]
     },
     {
       "default_state": "upstream-default",
       "name": "log-invitation-tokens",
-      "sources": [
-        "flags"
-      ]
+      "sources": ["flags"]
     },
     {
       "default_state": "upstream-default",
       "name": "login",
-      "sources": [
-        "flags"
-      ]
+      "sources": ["flags"]
     },
     {
       "default_state": "upstream-default",
       "name": "login-with-custom-sso",
-      "sources": [
-        "flags"
-      ]
+      "sources": ["flags"]
     },
     {
       "default_state": "upstream-default",
       "name": "login-with-github",
-      "sources": [
-        "flags"
-      ]
+      "sources": ["flags"]
     },
     {
       "default_state": "upstream-default",
       "name": "login-with-gitlab",
-      "sources": [
-        "flags"
-      ]
+      "sources": ["flags"]
     },
     {
       "default_state": "upstream-default",
       "name": "login-with-google",
-      "sources": [
-        "flags"
-      ]
+      "sources": ["flags"]
     },
     {
       "default_state": "upstream-default",
       "name": "login-with-ldap",
-      "sources": [
-        "flags"
-      ]
+      "sources": ["flags"]
     },
     {
       "default_state": "upstream-default",
       "name": "login-with-oidc",
-      "sources": [
-        "flags"
-      ]
+      "sources": ["flags"]
     },
     {
       "default_state": "enabled",
       "name": "login-with-password",
-      "sources": [
-        "flags"
-      ]
+      "sources": ["flags"]
     },
     {
       "default_state": "upstream-default",
       "name": "mcp",
-      "sources": [
-        "flags"
-      ]
+      "sources": ["flags"]
     },
     {
       "default_state": "upstream-default",
       "name": "nitrate",
-      "sources": [
-        "flags"
-      ]
+      "sources": ["flags"]
     },
     {
       "default_state": "upstream-default",
       "name": "nrepl-server",
-      "sources": [
-        "flags"
-      ]
+      "sources": ["flags"]
     },
     {
       "default_state": "upstream-default",
       "name": "oidc-registration",
-      "sources": [
-        "flags"
-      ]
+      "sources": ["flags"]
     },
     {
       "default_state": "enabled",
       "name": "onboarding",
-      "sources": [
-        "flags"
-      ]
+      "sources": ["flags"]
     },
     {
       "default_state": "upstream-default",
       "name": "perf-logs",
-      "sources": [
-        "flags"
-      ]
+      "sources": ["flags"]
     },
     {
       "default_state": "upstream-default",
       "name": "prepl-server",
-      "sources": [
-        "flags"
-      ]
+      "sources": ["flags"]
     },
     {
       "default_state": "upstream-default",
       "name": "quotes",
-      "sources": [
-        "flags"
-      ]
+      "sources": ["flags"]
     },
     {
       "default_state": "upstream-default",
       "name": "redis-cache",
-      "sources": [
-        "flags"
-      ]
+      "sources": ["flags"]
     },
     {
       "default_state": "enabled",
       "name": "registration",
-      "sources": [
-        "flags"
-      ]
+      "sources": ["flags"]
     },
     {
       "default_state": "enabled",
       "name": "render-wasm-dpr",
-      "sources": [
-        "flags"
-      ]
+      "sources": ["flags"]
     },
     {
       "default_state": "upstream-default",
       "name": "rpc-climit",
-      "sources": [
-        "flags"
-      ]
+      "sources": ["flags"]
     },
     {
       "default_state": "upstream-default",
       "name": "rpc-rlimit",
-      "sources": [
-        "flags"
-      ]
+      "sources": ["flags"]
     },
     {
       "default_state": "upstream-default",
       "name": "sec-fetch-metadata-middleware",
-      "sources": [
-        "flags"
-      ]
+      "sources": ["flags"]
     },
     {
       "default_state": "enabled",
       "name": "secure-session-cookies",
-      "sources": [
-        "flags"
-      ]
+      "sources": ["flags"]
     },
     {
       "default_state": "upstream-default",
       "name": "smtp",
-      "sources": [
-        "flags"
-      ]
+      "sources": ["flags"]
     },
     {
       "default_state": "upstream-default",
       "name": "smtp-debug",
-      "sources": [
-        "flags"
-      ]
+      "sources": ["flags"]
     },
     {
       "default_state": "upstream-default",
       "name": "soft-file-schema-validation",
-      "sources": [
-        "flags"
-      ]
+      "sources": ["flags"]
     },
     {
       "default_state": "upstream-default",
       "name": "soft-file-validation",
-      "sources": [
-        "flags"
-      ]
+      "sources": ["flags"]
     },
     {
       "default_state": "upstream-default",
       "name": "soft-quotes",
-      "sources": [
-        "flags"
-      ]
+      "sources": ["flags"]
     },
     {
       "default_state": "upstream-default",
       "name": "soft-rpc-rlimit",
-      "sources": [
-        "flags"
-      ]
+      "sources": ["flags"]
     },
     {
       "default_state": "upstream-default",
       "name": "strict-session-cookies",
-      "sources": [
-        "flags"
-      ]
+      "sources": ["flags"]
     },
     {
       "default_state": "upstream-default",
       "name": "subscriptions",
-      "sources": [
-        "flags"
-      ]
+      "sources": ["flags"]
     },
     {
       "default_state": "upstream-default",
       "name": "subscriptions-old",
-      "sources": [
-        "flags"
-      ]
+      "sources": ["flags"]
     },
     {
       "default_state": "upstream-default",
       "name": "telemetry",
-      "sources": [
-        "flags"
-      ]
+      "sources": ["flags"]
     },
     {
       "default_state": "upstream-default",
       "name": "terms-and-privacy-checkbox",
-      "sources": [
-        "flags"
-      ]
+      "sources": ["flags"]
     },
     {
       "default_state": "upstream-default",
       "name": "tiered-file-data-storage",
-      "sources": [
-        "flags"
-      ]
+      "sources": ["flags"]
     },
     {
       "default_state": "upstream-default",
       "name": "token-base-font-size",
-      "sources": [
-        "flags"
-      ]
+      "sources": ["flags"]
     },
     {
       "default_state": "enabled",
       "name": "token-color",
-      "sources": [
-        "flags"
-      ]
+      "sources": ["flags"]
     },
     {
       "default_state": "enabled",
       "name": "token-shadow",
-      "sources": [
-        "flags"
-      ]
+      "sources": ["flags"]
     },
     {
       "default_state": "upstream-default",
       "name": "token-tokenscript",
-      "sources": [
-        "flags"
-      ]
+      "sources": ["flags"]
     },
     {
       "default_state": "upstream-default",
       "name": "transit-readable-response",
-      "sources": [
-        "flags"
-      ]
+      "sources": ["flags"]
     },
     {
       "default_state": "upstream-default",
       "name": "urepl-server",
-      "sources": [
-        "flags"
-      ]
+      "sources": ["flags"]
     },
     {
       "default_state": "upstream-default",
       "name": "user-feedback",
-      "sources": [
-        "flags"
-      ]
+      "sources": ["flags"]
     },
     {
       "default_state": "upstream-default",
       "name": "v2-migration",
-      "sources": [
-        "flags"
-      ]
+      "sources": ["flags"]
     },
     {
       "default_state": "upstream-default",
       "name": "webhooks",
-      "sources": [
-        "flags"
-      ]
+      "sources": ["flags"]
     }
   ],
   "sources": {

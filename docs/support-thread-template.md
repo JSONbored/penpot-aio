@@ -1,5 +1,3 @@
-# Unraid Support Thread Draft
-
 # Support: Penpot AIO for Unraid
 
 ## What this is
@@ -47,7 +45,7 @@ If the issue is upstream Penpot behavior rather than the Unraid packaging layer,
 
 ## Links
 
-- Project repo: https://github.com/JSONbored/penpot-aio
-- Upstream project: https://github.com/penpot/penpot
-- Catalog repo: https://github.com/JSONbored/awesome-unraid
-- GitHub Sponsors: https://github.com/sponsors/JSONbored
+- Project repo: [JSONbored/penpot-aio](https://github.com/JSONbored/penpot-aio)
+- Upstream project: [penpot/penpot](https://github.com/penpot/penpot)
+- Catalog repo: [JSONbored/awesome-unraid](https://github.com/JSONbored/awesome-unraid)
+- GitHub Sponsors: [JSONbored](https://github.com/sponsors/JSONbored)

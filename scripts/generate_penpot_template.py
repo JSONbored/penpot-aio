@@ -76,7 +76,7 @@ CURATED_DEFAULTS = {
     "PENPOT_HTTP_SERVER_MAX_MULTIPART_BODY_SIZE": "367001600",
     "PENPOT_DATABASE_URI": "",
     "PENPOT_DATABASE_USERNAME": "penpot",
-    "PENPOT_DATABASE_PASSWORD": "",
+    "PENPOT_DATABASE_PASSWORD": "",  # nosec B105 - blank template default.
     "PENPOT_REDIS_URI": "",
     "PENPOT_OBJECTS_STORAGE_BACKEND": "fs|s3",
     "PENPOT_OBJECTS_STORAGE_FS_DIRECTORY": "/appdata/assets",
@@ -84,7 +84,7 @@ CURATED_DEFAULTS = {
     "PENPOT_SMTP_HOST": "",
     "PENPOT_SMTP_PORT": "",
     "PENPOT_SMTP_USERNAME": "",
-    "PENPOT_SMTP_PASSWORD": "",
+    "PENPOT_SMTP_PASSWORD": "",  # nosec B105 - blank template default.
     "PENPOT_SMTP_TLS": "false|true",
     "PENPOT_SMTP_SSL": "false|true",
     "PENPOT_SMTP_DEFAULT_FROM": "Penpot <no-reply@penpot.local>",
@@ -103,26 +103,101 @@ CURATED_DEFAULTS = {
     "PENPOT_MCP_LOG_LEVEL": "info|debug|warn|error|trace",
     "PENPOT_MCP_LOG_DIR": "/appdata/logs/mcp",
     "PENPOT_FLAGS": "",
-    "PENPOT_SECRET_KEY": "",
+    "PENPOT_SECRET_KEY": "",  # nosec B105 - generated at runtime.
 }
 
 AIO_CONFIGS = [
-    ("PENPOT_AIO_ENABLE_INTERNAL_POSTGRES", "true|false", "Use the bundled PostgreSQL database. Set false only when PENPOT_DATABASE_URI points at an external PostgreSQL server.", False),
-    ("PENPOT_AIO_ENABLE_INTERNAL_REDIS", "true|false", "Use the bundled Redis-compatible cache. Set false only when PENPOT_REDIS_URI points at an external Redis or Valkey service.", False),
-    ("PENPOT_AIO_ENABLE_MAILPIT", "true|false", "Use bundled Mailpit when SMTP_HOST is blank so local email-dependent flows work on first boot.", False),
-    ("PENPOT_AIO_ENABLE_MCP", "true|false", "Run Penpot MCP inside the AIO container and expose it through the frontend /mcp routes.", False),
-    ("PENPOT_AIO_DEFAULT_FLAGS", "disable-email-verification enable-smtp disable-secure-session-cookies enable-mcp", "Default flags used when PENPOT_FLAGS is blank. Remove disable-* entries before public HTTPS production use.", False),
-    ("PENPOT_AIO_EXTRA_ENV_FILE", "/appdata/config/extra.env", "Optional dotenv-style escape hatch loaded after generated defaults. Use only for rare upstream variables or temporary debugging.", False),
-    ("PENPOT_AIO_WAIT_TIMEOUT_SECONDS", "360", "Startup wait timeout for internal PostgreSQL, Redis, and Mailpit readiness checks.", False),
-    ("PENPOT_AIO_DATABASE_NAME", "penpot", "Database name used by the bundled PostgreSQL cluster.", False),
-    ("PENPOT_AIO_REDIS_PASSWORD", "", "Optional manual password for bundled Redis. Leave blank to generate and persist one on first boot.", True),
+    (
+        "PENPOT_AIO_ENABLE_INTERNAL_POSTGRES",
+        "true|false",
+        "Use the bundled PostgreSQL database. Set false only when PENPOT_DATABASE_URI points at an external PostgreSQL server.",
+        False,
+    ),
+    (
+        "PENPOT_AIO_ENABLE_INTERNAL_REDIS",
+        "true|false",
+        "Use the bundled Redis-compatible cache. Set false only when PENPOT_REDIS_URI points at an external Redis or Valkey service.",
+        False,
+    ),
+    (
+        "PENPOT_AIO_ENABLE_MAILPIT",
+        "true|false",
+        "Use bundled Mailpit when SMTP_HOST is blank so local email-dependent flows work on first boot.",
+        False,
+    ),
+    (
+        "PENPOT_AIO_ENABLE_MCP",
+        "true|false",
+        "Run Penpot MCP inside the AIO container and expose it through the frontend /mcp routes.",
+        False,
+    ),
+    (
+        "PENPOT_AIO_DEFAULT_FLAGS",
+        "disable-email-verification enable-smtp disable-secure-session-cookies enable-mcp",
+        "Default flags used when PENPOT_FLAGS is blank. Remove disable-* entries before public HTTPS production use.",
+        False,
+    ),
+    (
+        "PENPOT_AIO_EXTRA_ENV_FILE",
+        "/appdata/config/extra.env",
+        "Optional dotenv-style escape hatch loaded after generated defaults. Use only for rare upstream variables or temporary debugging.",
+        False,
+    ),
+    (
+        "PENPOT_AIO_WAIT_TIMEOUT_SECONDS",
+        "360",
+        "Startup wait timeout for internal PostgreSQL, Redis, and Mailpit readiness checks.",
+        False,
+    ),
+    (
+        "PENPOT_AIO_DATABASE_NAME",
+        "penpot",
+        "Database name used by the bundled PostgreSQL cluster.",
+        False,
+    ),
+    (
+        "PENPOT_AIO_REDIS_PASSWORD",
+        "",
+        "Optional manual password for bundled Redis. Leave blank to generate and persist one on first boot.",
+        True,
+    ),
     ("PENPOT_AIO_REDIS_MAXMEMORY", "256mb", "Bundled Redis maxmemory setting.", False),
-    ("PENPOT_AIO_REDIS_MAXMEMORY_POLICY", "volatile-lfu|allkeys-lfu|allkeys-lru|volatile-lru|noeviction", "Bundled Redis memory eviction policy.", False),
-    ("PENPOT_AIO_MAILPIT_UI_USERNAME", "", "Optional Mailpit UI username. Leave blank to persist the default penpot username.", False),
-    ("PENPOT_AIO_MAILPIT_UI_PASSWORD", "", "Optional Mailpit UI password. Leave blank to generate and persist one on first boot.", True),
-    ("PENPOT_AIO_MAILPIT_MAX_MESSAGES", "500", "Maximum messages retained by the bundled Mailpit inbox.", False),
-    ("PENPOT_AIO_MAILPIT_MAX_AGE", "14d", "Maximum age for messages retained by bundled Mailpit.", False),
-    ("PENPOT_AIO_LOG_LEVEL", "info|debug|warn|error", "Wrapper log level. This does not replace upstream Penpot logging controls.", False),
+    (
+        "PENPOT_AIO_REDIS_MAXMEMORY_POLICY",
+        "volatile-lfu|allkeys-lfu|allkeys-lru|volatile-lru|noeviction",
+        "Bundled Redis memory eviction policy.",
+        False,
+    ),
+    (
+        "PENPOT_AIO_MAILPIT_UI_USERNAME",
+        "",
+        "Optional Mailpit UI username. Leave blank to persist the default penpot username.",
+        False,
+    ),
+    (
+        "PENPOT_AIO_MAILPIT_UI_PASSWORD",
+        "",
+        "Optional Mailpit UI password. Leave blank to generate and persist one on first boot.",
+        True,
+    ),
+    (
+        "PENPOT_AIO_MAILPIT_MAX_MESSAGES",
+        "500",
+        "Maximum messages retained by the bundled Mailpit inbox.",
+        False,
+    ),
+    (
+        "PENPOT_AIO_MAILPIT_MAX_AGE",
+        "14d",
+        "Maximum age for messages retained by bundled Mailpit.",
+        False,
+    ),
+    (
+        "PENPOT_AIO_LOG_LEVEL",
+        "info|debug|warn|error",
+        "Wrapper log level. This does not replace upstream Penpot logging controls.",
+        False,
+    ),
 ]
 
 
@@ -141,7 +216,9 @@ class Config:
 
     def render(self) -> str:
         value = selected_value(self.default, self.value)
-        literal_pipe_default = "|" in self.default and not is_dropdown_default(self.default)
+        literal_pipe_default = "|" in self.default and not is_dropdown_default(
+            self.default
+        )
         attrs = {
             "Name": self.name,
             "Target": self.target,
@@ -192,7 +269,18 @@ def display_name(target: str) -> str:
         name = name.removeprefix("PENPOT_AIO_")
     elif name.startswith("PENPOT_"):
         name = name.removeprefix("PENPOT_")
-    return name.replace("_", " ").title().replace("Uri", "URI").replace("Ssrf", "SSRF").replace("Mcp", "MCP").replace("Oidc", "OIDC").replace("Ldap", "LDAP").replace("Smtp", "SMTP").replace("Aws", "AWS").replace("S3", "S3")
+    return (
+        name.replace("_", " ")
+        .title()
+        .replace("Uri", "URI")
+        .replace("Ssrf", "SSRF")
+        .replace("Mcp", "MCP")
+        .replace("Oidc", "OIDC")
+        .replace("Ldap", "LDAP")
+        .replace("Smtp", "SMTP")
+        .replace("Aws", "AWS")
+        .replace("S3", "S3")
+    )
 
 
 def group_for(target: str) -> str:
@@ -215,15 +303,44 @@ def group_for(target: str) -> str:
         return "Cache"
     if target.startswith("PENPOT_SMTP_") or target.startswith(("PENPOT_EMAIL_",)):
         return "SMTP"
-    if any(part in target for part in ("GITHUB", "GITLAB", "GOOGLE", "OIDC", "LDAP", "REGISTRATION", "AUTH_TOKEN")):
+    if any(
+        part in target
+        for part in (
+            "GITHUB",
+            "GITLAB",
+            "GOOGLE",
+            "OIDC",
+            "LDAP",
+            "REGISTRATION",
+            "AUTH_TOKEN",
+        )
+    ):
         return "Auth"
-    if "STORAGE" in target or "ASSETS" in target or target.startswith(("AWS_", "PENPOT_MEDIA_", "PENPOT_FONT_", "PENPOT_FILE_DATA")):
+    if (
+        "STORAGE" in target
+        or "ASSETS" in target
+        or target.startswith(
+            ("AWS_", "PENPOT_MEDIA_", "PENPOT_FONT_", "PENPOT_FILE_DATA")
+        )
+    ):
         return "Storage"
     if "MCP" in target:
         return "MCP"
     if "TELEMETRY" in target or "WEBHOOK" in target or "FEEDBACK" in target:
         return "Telemetry"
-    if any(part in target for part in ("MAX", "THREAD", "POOL", "PARALLELISM", "LIMIT", "QUOTES", "DELAY", "SNAPSHOT")):
+    if any(
+        part in target
+        for part in (
+            "MAX",
+            "THREAD",
+            "POOL",
+            "PARALLELISM",
+            "LIMIT",
+            "QUOTES",
+            "DELAY",
+            "SNAPSHOT",
+        )
+    ):
         return "Limits/Performance"
     if "SSRF" in target or "CORS" in target or "COOKIE" in target:
         return "Security/SSRF"
@@ -243,10 +360,10 @@ def mask_for(target: str) -> bool:
 def description_for(target: str) -> str:
     custom = {
         "PENPOT_PUBLIC_URI": "Canonical URL users will visit, including http or https. For LAN installs use your Unraid host and mapped port; for public installs use the reverse-proxy HTTPS URL.",
-        "PENPOT_SECRET_KEY": "Penpot master secret key. Leave blank to generate and persist a strong value on first boot. Changing this later can invalidate sessions and encrypted data.",
+        "PENPOT_SECRET_KEY": "Penpot master secret key. Leave blank to generate and persist a strong value on first boot. Changing this later can invalidate sessions and encrypted data.",  # nosec B105
         "PENPOT_DATABASE_URI": "Leave blank for bundled PostgreSQL. Set a PostgreSQL URI only when using an external database.",
         "PENPOT_DATABASE_USERNAME": "PostgreSQL username. The bundled database uses penpot.",
-        "PENPOT_DATABASE_PASSWORD": "PostgreSQL password. Leave blank to generate and persist one for the bundled database.",
+        "PENPOT_DATABASE_PASSWORD": "PostgreSQL password. Leave blank to generate and persist one for the bundled database.",  # nosec B105
         "PENPOT_REDIS_URI": "Leave blank for bundled Redis-compatible cache. Set an external Redis or Valkey URI only when disabling the internal cache.",
         "PENPOT_OBJECTS_STORAGE_BACKEND": "Object storage backend. The AIO default stores assets on the AppData filesystem; S3 requires the matching S3 fields.",
         "PENPOT_OBJECTS_STORAGE_FS_DIRECTORY": "Filesystem asset directory for the bundled storage path.",
@@ -284,12 +401,57 @@ def default_for(item: dict[str, object]) -> str:
 
 def build_configs(inventory: dict[str, object]) -> list[Config]:
     configs: list[Config] = [
-        Config("Web UI Port", "8080", "9001", mode="tcp", description="Penpot frontend, API gateway, exporter routes, and MCP proxy.", type="Port", display="always", required=True),
-        Config("Mailpit UI Port", "8025", "8026", mode="tcp", description="Bundled Mailpit inbox UI for local/lab mail capture. Advanced because normal Penpot use starts through the Web UI.", type="Port"),
-        Config("MCP HTTP Port", "4401", "", mode="tcp", description="Optional direct host port for the Penpot MCP HTTP endpoint. Leave blank unless you need direct MCP access outside the frontend /mcp route.", type="Port"),
-        Config("MCP WebSocket Port", "4402", "", mode="tcp", description="Optional direct host port for the Penpot MCP WebSocket endpoint. Leave blank unless you need direct MCP access outside the frontend /mcp route.", type="Port"),
-        Config("AppData", "/appdata", "/mnt/user/appdata/penpot-aio", mode="rw", description="Persistent Penpot data, PostgreSQL data, cache data, generated secrets, assets, Mailpit data, logs, and optional extra.env.", type="Path", display="always", required=True),
-        Config("Public URL", "PENPOT_PUBLIC_URI", "http://localhost:9001", description=description_for("PENPOT_PUBLIC_URI"), display="always"),
+        Config(
+            "Web UI Port",
+            "8080",
+            "9001",
+            mode="tcp",
+            description="Penpot frontend, API gateway, exporter routes, and MCP proxy.",
+            type="Port",
+            display="always",
+            required=True,
+        ),
+        Config(
+            "Mailpit UI Port",
+            "8025",
+            "8026",
+            mode="tcp",
+            description="Bundled Mailpit inbox UI for local/lab mail capture. Advanced because normal Penpot use starts through the Web UI.",
+            type="Port",
+        ),
+        Config(
+            "MCP HTTP Port",
+            "4401",
+            "",
+            mode="tcp",
+            description="Optional direct host port for the Penpot MCP HTTP endpoint. Leave blank unless you need direct MCP access outside the frontend /mcp route.",
+            type="Port",
+        ),
+        Config(
+            "MCP WebSocket Port",
+            "4402",
+            "",
+            mode="tcp",
+            description="Optional direct host port for the Penpot MCP WebSocket endpoint. Leave blank unless you need direct MCP access outside the frontend /mcp route.",
+            type="Port",
+        ),
+        Config(
+            "AppData",
+            "/appdata",
+            "/mnt/user/appdata/penpot-aio",
+            mode="rw",
+            description="Persistent Penpot data, PostgreSQL data, cache data, generated secrets, assets, Mailpit data, logs, and optional extra.env.",
+            type="Path",
+            display="always",
+            required=True,
+        ),
+        Config(
+            "Public URL",
+            "PENPOT_PUBLIC_URI",
+            "http://localhost:9001",
+            description=description_for("PENPOT_PUBLIC_URI"),
+            display="always",
+        ),
     ]
 
     seen = {config.target for config in configs}
@@ -306,7 +468,8 @@ def build_configs(inventory: dict[str, object]) -> list[Config]:
         seen.add(target)
 
     env_items = inventory.get("env", [])
-    assert isinstance(env_items, list)
+    if not isinstance(env_items, list):
+        raise TypeError("inventory env must be a list")
     for item in env_items:
         target = str(item["name"])
         if target in seen:
@@ -324,7 +487,8 @@ def build_configs(inventory: dict[str, object]) -> list[Config]:
         seen.add(target)
 
     flags = inventory.get("flags", [])
-    assert isinstance(flags, list)
+    if not isinstance(flags, list):
+        raise TypeError("inventory flags must be a list")
     for flag in flags:
         flag_name = str(flag["name"])
         target = f"PENPOT_AIO_FLAG_{flag_name.upper().replace('-', '_')}"
@@ -443,11 +607,12 @@ def validate_configs(configs: list[Config], inventory: dict[str, object]) -> Non
     if duplicates:
         raise SystemExit(f"Duplicate Config targets: {', '.join(duplicates)}")
     for config in configs:
-        if (
-            is_dropdown_default(config.default)
-            and selected_value(config.default, config.value) not in config.default.split("|")
-        ):
-            raise SystemExit(f"{config.target}: selected value is not in dropdown default")
+        if is_dropdown_default(config.default) and selected_value(
+            config.default, config.value
+        ) not in config.default.split("|"):
+            raise SystemExit(
+                f"{config.target}: selected value is not in dropdown default"
+            )
         if (
             any(hint in config.target for hint in SECRET_HINTS)
             and config.target not in NON_SECRET_TARGETS
@@ -458,14 +623,18 @@ def validate_configs(configs: list[Config], inventory: dict[str, object]) -> Non
     env_names = {str(item["name"]) for item in inventory.get("env", [])}
     missing_env = sorted(env_names - set(targets))
     if missing_env:
-        raise SystemExit(f"Inventory env vars missing from XML: {', '.join(missing_env)}")
+        raise SystemExit(
+            f"Inventory env vars missing from XML: {', '.join(missing_env)}"
+        )
     missing_flags = []
     for flag in inventory.get("flags", []):
         target = f"PENPOT_AIO_FLAG_{str(flag['name']).upper().replace('-', '_')}"
         if target not in targets:
             missing_flags.append(str(flag["name"]))
     if missing_flags:
-        raise SystemExit(f"Inventory flags missing from XML: {', '.join(sorted(missing_flags))}")
+        raise SystemExit(
+            f"Inventory flags missing from XML: {', '.join(sorted(missing_flags))}"
+        )
 
 
 def main(argv: list[str]) -> int:
@@ -479,7 +648,9 @@ def main(argv: list[str]) -> int:
     output = render_template(configs)
     if args.check:
         if OUTPUT_PATH.read_text() != output:
-            raise SystemExit("penpot-aio.xml is not current; run scripts/generate_penpot_template.py")
+            raise SystemExit(
+                "penpot-aio.xml is not current; run scripts/generate_penpot_template.py"
+            )
         print("penpot-aio.xml matches the generated template.")
         return 0
     OUTPUT_PATH.write_text(output)

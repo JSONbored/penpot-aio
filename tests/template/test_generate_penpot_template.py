@@ -2,14 +2,25 @@ from __future__ import annotations
 
 import json
 import sys
-import xml.etree.ElementTree as ET
+
+from defusedxml import ElementTree as ET
 
 from tests.conftest import REPO_ROOT
 from tests.helpers import run_command
 
 XML_PATH = REPO_ROOT / "penpot-aio.xml"
 INVENTORY_PATH = REPO_ROOT / "docs/upstream/penpot-config-inventory.json"
-SECRET_HINTS = ("ACCESS_KEY", "API_KEY", "AUTH", "CREDENTIAL", "JWT", "KEY", "PASSWORD", "SECRET", "TOKEN")
+SECRET_HINTS = (
+    "ACCESS_KEY",
+    "API_KEY",
+    "AUTH",
+    "CREDENTIAL",
+    "JWT",
+    "KEY",
+    "PASSWORD",
+    "SECRET",
+    "TOKEN",
+)
 NON_SECRET_TARGETS = {
     "PENPOT_ASSETS_PATH",
     "PENPOT_AUTH_TOKEN_COOKIE_MAX_AGE",
@@ -52,10 +63,20 @@ def test_xml_parses_and_has_ca_metadata() -> None:
     root = ET.parse(XML_PATH).getroot()
     assert root.findtext("Name") == "penpot-aio"  # nosec B101
     assert root.findtext("Repository") == "jsonbored/penpot-aio:latest"  # nosec B101
-    assert root.findtext("Project") == "https://github.com/JSONbored/penpot-aio"  # nosec B101
-    assert root.findtext("Support") == "https://github.com/JSONbored/penpot-aio/issues"  # nosec B101
-    assert root.findtext("TemplateURL") == "https://raw.githubusercontent.com/JSONbored/awesome-unraid/main/penpot-aio.xml"  # nosec B101
-    assert root.findtext("Icon") == "https://raw.githubusercontent.com/JSONbored/awesome-unraid/main/icons/penpot.png"  # nosec B101
+    assert (
+        root.findtext("Project") == "https://github.com/JSONbored/penpot-aio"
+    )  # nosec B101
+    assert (
+        root.findtext("Support") == "https://github.com/JSONbored/penpot-aio/issues"
+    )  # nosec B101
+    assert (
+        root.findtext("TemplateURL")
+        == "https://raw.githubusercontent.com/JSONbored/awesome-unraid/main/penpot-aio.xml"
+    )  # nosec B101
+    assert (
+        root.findtext("Icon")
+        == "https://raw.githubusercontent.com/JSONbored/awesome-unraid/main/icons/penpot.png"
+    )  # nosec B101
     assert "Productivity" in (root.findtext("Category") or "")  # nosec B101
 
 
@@ -84,10 +105,18 @@ def test_known_upstream_doc_typos_are_normalized() -> None:
 
 
 def test_beginner_surface_stays_minimal() -> None:
-    always = {config.attrib["Target"] for config in configs() if config.attrib.get("Display") == "always"}
+    always = {
+        config.attrib["Target"]
+        for config in configs()
+        if config.attrib.get("Display") == "always"
+    }
     assert always == {"8080", "/appdata", "PENPOT_PUBLIC_URI"}  # nosec B101
 
-    required = {config.attrib["Target"] for config in configs() if config.attrib.get("Required") == "true"}
+    required = {
+        config.attrib["Target"]
+        for config in configs()
+        if config.attrib.get("Required") == "true"
+    }
     assert required == {"8080", "/appdata"}  # nosec B101
 
 
@@ -119,8 +148,12 @@ def test_expected_configuration_groups_are_exposed() -> None:
 
 def test_aio_escape_hatch_is_present_but_not_substituting_for_inventory() -> None:
     by_target = config_by_target()
-    assert by_target["PENPOT_AIO_EXTRA_ENV_FILE"].attrib["Display"] == "advanced"  # nosec B101
-    assert by_target["PENPOT_AIO_EXTRA_ENV_FILE"].text == "/appdata/config/extra.env"  # nosec B101
+    assert (
+        by_target["PENPOT_AIO_EXTRA_ENV_FILE"].attrib["Display"] == "advanced"
+    )  # nosec B101
+    assert (
+        by_target["PENPOT_AIO_EXTRA_ENV_FILE"].text == "/appdata/config/extra.env"
+    )  # nosec B101
     assert len(config_targets()) > 240  # nosec B101
 
 
@@ -130,7 +163,10 @@ def test_secret_like_fields_are_masked() -> None:
         target = config.attrib["Target"]
         if target.startswith("PENPOT_AIO_FLAG_") or target in NON_SECRET_TARGETS:
             continue
-        if any(hint in target for hint in SECRET_HINTS) and config.attrib.get("Mask") != "true":
+        if (
+            any(hint in target for hint in SECRET_HINTS)
+            and config.attrib.get("Mask") != "true"
+        ):
             failures.append(target)
     assert failures == []  # nosec B101
 
@@ -151,10 +187,15 @@ def test_dropdown_defaults_include_selected_value() -> None:
 
 def test_literal_pipe_defaults_are_not_treated_as_dropdowns() -> None:
     ldap_query = config_by_target()["PENPOT_LDAP_USER_QUERY"]
-    assert ldap_query.attrib["Default"] == "(|(uid=:username)(mail=:username))"  # nosec B101
+    assert (
+        ldap_query.attrib["Default"] == "(|(uid=:username)(mail=:username))"
+    )  # nosec B101
     assert ldap_query.text == "(|(uid=:username)(mail=:username))"  # nosec B101
     raw_xml = XML_PATH.read_text()
-    assert 'Target="PENPOT_LDAP_USER_QUERY" Default="(&#124;(uid=:username)(mail=:username))"' in raw_xml  # nosec B101
+    assert (
+        'Target="PENPOT_LDAP_USER_QUERY" Default="(&#124;(uid=:username)(mail=:username))"'
+        in raw_xml
+    )  # nosec B101
 
 
 def test_dropdowns_use_pipe_delimited_values_without_nested_options() -> None:

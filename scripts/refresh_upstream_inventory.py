@@ -31,8 +31,12 @@ ENV_NAME_ALIASES = {
 
 def fetch(url: str) -> str:
     try:
-        request = Request(url, headers={"User-Agent": "penpot-aio-config-inventory/1.0"})
-        with urlopen(request, timeout=45) as response:  # nosec B310 - fixed upstream HTTPS URLs.
+        request = Request(
+            url, headers={"User-Agent": "penpot-aio-config-inventory/1.0"}
+        )
+        with urlopen(
+            request, timeout=45
+        ) as response:  # nosec B310 - fixed upstream HTTPS URLs.
             return response.read().decode("utf-8")
     except (HTTPError, URLError) as exc:
         raise SystemExit(f"Unable to fetch {url}: {exc}") from exc
@@ -211,7 +215,9 @@ def merge_items(*groups: dict[str, dict[str, object]]) -> list[dict[str, object]
             current = merged.setdefault(name, dict(item))
             current.setdefault("sources", [])
             current.setdefault("enum", [])
-            current["sources"] = sorted(set(current["sources"]) | set(item.get("sources", [])))
+            current["sources"] = sorted(
+                set(current["sources"]) | set(item.get("sources", []))
+            )
             if not current.get("default") and item.get("default"):
                 current["default"] = item["default"]
             if item.get("kind") not in {"", "string", None}:
@@ -247,7 +253,9 @@ def main() -> int:
     }
     OUT.parent.mkdir(parents=True, exist_ok=True)
     OUT.write_text(json.dumps(payload, indent=2, sort_keys=True) + "\n")
-    print(f"Wrote {OUT.relative_to(ROOT)} with {len(env_items)} env vars and {len(payload['flags'])} flags.")
+    print(
+        f"Wrote {OUT.relative_to(ROOT)} with {len(env_items)} env vars and {len(payload['flags'])} flags."
+    )
     return 0
 
 
