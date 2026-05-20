@@ -27,6 +27,11 @@ SECRET_HINTS = (
     "TOKEN",
 )
 
+SECRET_URI_TARGETS = {
+    "PENPOT_DATABASE_URI",
+    "PENPOT_REDIS_URI",
+}
+
 NON_SECRET_TARGETS = {
     "PENPOT_ASSETS_PATH",
     "PENPOT_AUTH_TOKEN_COOKIE_MAX_AGE",
@@ -354,6 +359,8 @@ def mask_for(target: str) -> bool:
         return False
     if target in NON_SECRET_TARGETS:
         return False
+    if target in SECRET_URI_TARGETS:
+        return True
     return any(hint in target for hint in SECRET_HINTS)
 
 
