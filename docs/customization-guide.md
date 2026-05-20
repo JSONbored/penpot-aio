@@ -23,4 +23,4 @@ For HTTPS/public use:
 
 ## Generated Values
 
-Generated values live in `/appdata/config/generated.env`. Explicit template variables override generated values. `/appdata/config/extra.env` loads last for rare emergency overrides.
+Generated values live in `/appdata/config/generated.env`. Explicit template variables override generated values. `/appdata/config/extra.env` loads last for rare emergency key/value overrides. It accepts `PENPOT_`, `AWS_`, and core runtime keys; shell syntax is not executed.

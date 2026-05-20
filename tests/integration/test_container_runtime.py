@@ -103,12 +103,15 @@ def test_explicit_secret_overrides_skip_generated_values(
 def test_extra_env_file_overrides_generated_runtime_defaults(
     runtime: DockerRuntime,
 ) -> None:
+    payload_marker = "/appdata/config/penpot-extra-env-executed"
+    shell_payload = f"$(touch {payload_marker})"
     with runtime.container(
         env_overrides={"PENPOT_PUBLIC_URI": "http://127.0.0.1:9001"},
         preseed_appdata=[
             "install -d -m 700 /appdata/config && "
             "printf '%s\n' 'PENPOT_TELEMETRY_REFERER=extra-env-test' "
-            "'PENPOT_FLAGS=enable-demo-users' > /appdata/config/extra.env && "
+            "'PENPOT_FLAGS=enable-demo-users' "
+            f"'PENPOT_AIO_LOG_LEVEL={shell_payload}' > /appdata/config/extra.env && "
             "chmod 600 /appdata/config/extra.env"
         ],
     ) as container:
@@ -118,6 +121,10 @@ def test_extra_env_file_overrides_generated_runtime_defaults(
             "export PENPOT_TELEMETRY_REFERER=extra-env-test" in runtime_env
         )  # nosec B101
         assert "export PENPOT_FLAGS=enable-demo-users" in runtime_env  # nosec B101
+        assert (
+            f"export PENPOT_AIO_LOG_LEVEL='{shell_payload}'" in runtime_env
+        )  # nosec B101
+        assert not container.path_exists(payload_marker)  # nosec B101
 
 
 def test_external_smtp_configuration_keeps_bundled_mailpit_idle(

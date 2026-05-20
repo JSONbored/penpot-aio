@@ -140,7 +140,7 @@ AIO_CONFIGS = [
     (
         "PENPOT_AIO_EXTRA_ENV_FILE",
         "/appdata/config/extra.env",
-        "Optional dotenv-style escape hatch loaded after generated defaults. Use only for rare upstream variables or temporary debugging.",
+        "Optional dotenv-style escape hatch loaded after generated defaults. Only PENPOT_, AWS_, and core runtime keys are accepted; shell syntax is not executed.",
         False,
     ),
     (
@@ -530,7 +530,7 @@ def template_overview() -> str:
         - Advanced View exposes upstream Penpot configuration, Penpot flags, external PostgreSQL, external Redis/Valkey, SMTP, S3-compatible object storage, OAuth/OIDC/LDAP, telemetry, MCP, SSRF controls, rate/limit/performance tuning, and AIO runtime controls.
         - Leave database, cache, SMTP, and storage fields blank/defaulted for the bundled one-container path. Set the matching external fields only when intentionally moving that service out of the AIO container.
         - Blank secret fields generate and persist values in [code]/appdata/config/generated.env[/code]. Explicit template values override generated values.
-        - [code]/appdata/config/extra.env[/code] is loaded as a final escape hatch, not a substitute for the exposed template options.
+        - [code]/appdata/config/extra.env[/code] is loaded as a final sanitized key/value escape hatch, not a substitute for the exposed template options. Only [code]PENPOT_[/code], [code]AWS_[/code], and core runtime keys are accepted; shell syntax is not executed.
 
         [b]Important Notes[/b]
         - Penpot is a real multi-service stack. Plan for at least 2 CPU cores and 4 GiB RAM, with more for active teams or large files.

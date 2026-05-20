@@ -6,6 +6,7 @@ set -euo pipefail
 ENV_FILE="${PENPOT_AIO_GENERATED_ENV_FILE:-/appdata/config/generated.env}"
 EXTRA_ENV_FILE="${PENPOT_AIO_EXTRA_ENV_FILE:-/appdata/config/extra.env}"
 RUNTIME_ENV_FILE="/run/penpot-aio/runtime.env"
+SAFE_EXTRA_ENV_FILE="/run/penpot-aio/extra.env"
 MAILPIT_DIR="/appdata/config/mailpit"
 MAILPIT_UI_AUTH_FILE="${MAILPIT_DIR}/ui-auth.txt"
 
@@ -102,10 +103,50 @@ NODE
 
 load_extra_env() {
 	if [[ -f ${EXTRA_ENV_FILE} ]]; then
-		set -a
+		mkdir -p "$(dirname "${SAFE_EXTRA_ENV_FILE}")"
+		python3 - "${EXTRA_ENV_FILE}" "${SAFE_EXTRA_ENV_FILE}" <<'PY'
+import ast
+import re
+import shlex
+import sys
+
+source_path, target_path = sys.argv[1:3]
+name_pattern = re.compile(r"^[A-Z_][A-Z0-9_]*$")
+exact = {"LANG", "LC_ALL", "JAVA_HOME", "JVM_OPTS", "JAVA_OPTS", "PLAYWRIGHT_BROWSERS_PATH", "TZ"}
+
+
+def allowed_name(name: str) -> bool:
+    return name.startswith(("PENPOT_", "AWS_")) or name in exact
+
+
+with open(source_path, encoding="utf-8") as source, open(
+    target_path, "w", encoding="utf-8"
+) as target:
+    for lineno, line in enumerate(source, start=1):
+        raw = line.strip()
+        if not raw or raw.startswith("#"):
+            continue
+        if raw.startswith("export "):
+            raw = raw.removeprefix("export ").lstrip()
+        if "=" not in raw:
+            raise SystemExit(f"{source_path}:{lineno}: expected KEY=VALUE")
+        key, value = raw.split("=", 1)
+        key = key.strip()
+        value = value.strip()
+        if not name_pattern.fullmatch(key):
+            raise SystemExit(f"{source_path}:{lineno}: invalid environment key {key!r}")
+        if not allowed_name(key):
+            raise SystemExit(f"{source_path}:{lineno}: unsupported environment key {key!r}")
+        if len(value) >= 2 and value[0] == value[-1] and value[0] in {"'", '"'}:
+            try:
+                value = ast.literal_eval(value)
+            except (SyntaxError, ValueError) as exc:
+                raise SystemExit(f"{source_path}:{lineno}: invalid quoted value") from exc
+        target.write(f"export {key}={shlex.quote(value)}\n")
+PY
+		chmod 600 "${SAFE_EXTRA_ENV_FILE}"
 		# shellcheck disable=SC1090
-		source "${EXTRA_ENV_FILE}"
-		set +a
+		source "${SAFE_EXTRA_ENV_FILE}"
 	fi
 }
 

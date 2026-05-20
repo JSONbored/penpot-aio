@@ -51,7 +51,7 @@ For public HTTPS production, remove `disable-secure-session-cookies` and `disabl
 - MCP server environment variables
 - AIO wrapper variables
 
-Advanced View exposes external PostgreSQL, external Redis/Valkey, SMTP, S3-compatible object storage, OAuth/OIDC/LDAP, telemetry, MCP, SSRF controls, performance limits, raw `PENPOT_FLAGS`, per-flag dropdown controls, and the final `PENPOT_AIO_EXTRA_ENV_FILE=/appdata/config/extra.env` escape hatch.
+Advanced View exposes external PostgreSQL, external Redis/Valkey, SMTP, S3-compatible object storage, OAuth/OIDC/LDAP, telemetry, MCP, SSRF controls, performance limits, raw `PENPOT_FLAGS`, per-flag dropdown controls, and the final sanitized `PENPOT_AIO_EXTRA_ENV_FILE=/appdata/config/extra.env` key/value escape hatch.
 
 ## Local Validation
 
