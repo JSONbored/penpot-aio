@@ -84,6 +84,10 @@ def test_changes_are_generated_from_latest_changelog_entry() -> None:
     changes = ET.parse(XML_PATH).getroot().findtext("Changes") or ""
 
     assert changes.startswith("### 2026-05-21")  # nosec B101
+    assert (
+        "- Generated from CHANGELOG.md during release preparation. Do not edit manually."
+        in changes
+    )  # nosec B101
     assert "- Align Penpot AIO documentation" in changes  # nosec B101
     assert "- Mask credential-bearing upstream URIs" in changes  # nosec B101
 

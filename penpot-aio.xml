@@ -31,6 +31,7 @@
 - Public exposure should sit behind a trusted HTTPS reverse proxy. Remove [code]disable-secure-session-cookies[/code] and [code]disable-email-verification[/code] for production.&#xD;
 - The bundled Mailpit inbox is for local/lab capture, not real mail deliverability.</Overview>
   <Changes>### 2026-05-21&#xD;
+- Generated from CHANGELOG.md during release preparation. Do not edit manually.&#xD;
 - Align Penpot AIO documentation&#xD;
 - Mask credential-bearing upstream URIs</Changes>
   <Category>Productivity Tools:Utilities</Category>
