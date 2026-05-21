@@ -533,9 +533,10 @@ def changes_body() -> str:
         if stripped.startswith("- "):
             bullets.append(stripped)
 
+    generated_note = "- Generated from CHANGELOG.md during release preparation. Do not edit manually."
     if not bullets:
         bullets.append("- No user-facing changes listed.")
-    return "\n".join([f"### {label}", *bullets])
+    return "\n".join([f"### {label}", generated_note, *bullets])
 
 
 def template_overview() -> str:
