@@ -80,6 +80,14 @@ def test_xml_parses_and_has_ca_metadata() -> None:
     assert "Productivity" in (root.findtext("Category") or "")  # nosec B101
 
 
+def test_changes_are_generated_from_latest_changelog_entry() -> None:
+    changes = ET.parse(XML_PATH).getroot().findtext("Changes") or ""
+
+    assert changes.startswith("### 2026-05-21")  # nosec B101
+    assert "- Align Penpot AIO documentation" in changes  # nosec B101
+    assert "- Mask credential-bearing upstream URIs" in changes  # nosec B101
+
+
 def test_upstream_inventory_is_fully_represented() -> None:
     inventory = json.loads(INVENTORY_PATH.read_text())
     targets = config_targets()

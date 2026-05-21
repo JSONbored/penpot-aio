@@ -511,13 +511,31 @@ def build_configs(inventory: dict[str, object]) -> list[Config]:
 
 
 def changes_body() -> str:
-    return "\n".join(
-        [
-            "### 2026-05-20",
-            "- Generated from CHANGELOG.md during release preparation. Do not edit manually.",
-            "- Initial Penpot AIO implementation with bundled frontend, backend, exporter, MCP, PostgreSQL, Redis-compatible cache, Mailpit, generated secrets, and exhaustive upstream config exposure.",
-        ]
+    lines = CHANGELOG_PATH.read_text().splitlines()
+    release_line_index = next(
+        (
+            index
+            for index, line in enumerate(lines)
+            if line.startswith("## ") and "Unreleased" not in line
+        ),
+        None,
     )
+    if release_line_index is None:
+        return "### Unreleased\n- No release notes available."
+
+    heading = lines[release_line_index].removeprefix("## ").strip()
+    label = heading.split(" - ", 1)[1].strip() if " - " in heading else heading
+    bullets: list[str] = []
+    for line in lines[release_line_index + 1 :]:
+        if line.startswith("## "):
+            break
+        stripped = line.strip()
+        if stripped.startswith("- "):
+            bullets.append(stripped)
+
+    if not bullets:
+        bullets.append("- No user-facing changes listed.")
+    return "\n".join([f"### {label}", *bullets])
 
 
 def template_overview() -> str:

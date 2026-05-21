@@ -2,6 +2,16 @@
 
 All notable changes to this project will be documented in this file.
 
+## v2.15.3-aio.2 - 2026-05-21
+
+### Documentation
+
+- Align Penpot AIO documentation
+
+### Fixes
+
+- Mask credential-bearing upstream URIs
+
 ## v2.15.3-aio.1 - 2026-05-20
 
 ### Features
