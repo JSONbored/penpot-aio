@@ -77,7 +77,15 @@ def test_xml_parses_and_has_ca_metadata() -> None:
         root.findtext("Icon")
         == "https://raw.githubusercontent.com/JSONbored/awesome-unraid/main/icons/penpot.png"
     )  # nosec B101
-    assert "Productivity" in (root.findtext("Category") or "")  # nosec B101
+    assert root.findtext("Category") == "Productivity Tools:Utilities"  # nosec B101
+    assert (
+        root.findtext("ReadMe") == "https://github.com/JSONbored/penpot-aio#readme"
+    )  # nosec B101
+    assert [s.text for s in root.findall("Screenshot")] == [  # nosec B101
+        "https://raw.githubusercontent.com/JSONbored/awesome-unraid/main/screenshots/penpot-aio/01-login.png",
+        "https://raw.githubusercontent.com/JSONbored/awesome-unraid/main/screenshots/penpot-aio/02-projects.png",
+        "https://raw.githubusercontent.com/JSONbored/awesome-unraid/main/screenshots/penpot-aio/03-editor.png",
+    ]
 
 
 def test_changes_are_generated_from_latest_changelog_entry() -> None:
