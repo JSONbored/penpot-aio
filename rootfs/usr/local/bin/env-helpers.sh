@@ -235,6 +235,7 @@ write_mailpit_ui_auth_file() {
 	local hashed_password
 
 	mkdir -p "${MAILPIT_DIR}"
+	chmod 711 "$(dirname "${MAILPIT_DIR}")"
 	salt="$(openssl rand -hex 8)"
 	hashed_password="$(openssl passwd -6 -salt "${salt}" "${password}")"
 	printf '%s:%s\n' "${username}" "${hashed_password}" >"${MAILPIT_UI_AUTH_FILE}"

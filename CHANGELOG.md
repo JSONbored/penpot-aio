@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file.
 
+## v2.15.3-aio.3 - 2026-05-23
+
+### Fixes
+
+- Separate Penpot exporter port
+- Keep Mailpit UI auth readable when extra.env pre-creates the config directory
+
 ## v2.15.3-aio.2 - 2026-05-21
 
 ### Documentation

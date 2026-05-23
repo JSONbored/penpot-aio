@@ -20,6 +20,7 @@ chown -R penpot:penpot /appdata/assets /appdata/logs
 chown -R postgres:postgres /appdata/postgres /run/postgresql
 chown -R redis:redis /appdata/redis
 chown -R mailpit:mailpit /appdata/mailpit
+chmod 711 /appdata/config
 chmod 700 /appdata/postgres /appdata/redis /appdata/mailpit
 
 configure_runtime_env
