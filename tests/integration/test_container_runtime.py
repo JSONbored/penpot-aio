@@ -67,6 +67,10 @@ def test_happy_path_boot_and_restart_persists_generated_env(
         ):
             assert expected in processes  # nosec B101
         assert redis_password not in processes  # nosec B101
+        listeners = container.exec("ss -ltn").stdout
+        assert ":6060" in listeners  # nosec B101
+        assert ":6061" in listeners  # nosec B101
+        assert "Address already in use" not in container.logs()  # nosec B101
 
         container.restart()
         container.wait_for_http(path="/readyz")

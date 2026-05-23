@@ -77,19 +77,30 @@ def test_xml_parses_and_has_ca_metadata() -> None:
         root.findtext("Icon")
         == "https://raw.githubusercontent.com/JSONbored/awesome-unraid/main/icons/penpot.png"
     )  # nosec B101
-    assert "Productivity" in (root.findtext("Category") or "")  # nosec B101
+    assert root.findtext("Category") == "Productivity Tools:Utilities"  # nosec B101
+    assert (
+        root.findtext("ReadMe") == "https://github.com/JSONbored/penpot-aio#readme"
+    )  # nosec B101
+    assert [s.text for s in root.findall("Screenshot")] == [  # nosec B101
+        "https://raw.githubusercontent.com/JSONbored/awesome-unraid/main/screenshots/penpot-aio/01-login.png",
+        "https://raw.githubusercontent.com/JSONbored/awesome-unraid/main/screenshots/penpot-aio/02-projects.png",
+        "https://raw.githubusercontent.com/JSONbored/awesome-unraid/main/screenshots/penpot-aio/03-editor.png",
+    ]
 
 
 def test_changes_are_generated_from_latest_changelog_entry() -> None:
     changes = ET.parse(XML_PATH).getroot().findtext("Changes") or ""
 
-    assert changes.startswith("### 2026-05-21")  # nosec B101
+    assert changes.startswith("### 2026-05-23")  # nosec B101
     assert (
         "- Generated from CHANGELOG.md during release preparation. Do not edit manually."
         in changes
     )  # nosec B101
-    assert "- Align Penpot AIO documentation" in changes  # nosec B101
-    assert "- Mask credential-bearing upstream URIs" in changes  # nosec B101
+    assert "- Separate Penpot exporter port" in changes  # nosec B101
+    assert (  # nosec B101
+        "- Keep Mailpit UI auth readable when extra.env pre-creates the config directory"
+        in changes
+    )
 
 
 def test_upstream_inventory_is_fully_represented() -> None:
