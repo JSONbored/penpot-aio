@@ -2,6 +2,12 @@
 
 All notable changes to this project will be documented in this file.
 
+## v2.15.3-aio.4 - 2026-05-31
+
+### Maintenance
+
+- Bump mailpit to v1.30.1
+
 ## v2.15.3-aio.3 - 2026-05-23
 
 ### Fixes

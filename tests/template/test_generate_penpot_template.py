@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import json
+import re
 import sys
 
 from defusedxml import ElementTree as ET
@@ -9,6 +10,7 @@ from tests.conftest import REPO_ROOT
 from tests.helpers import run_command
 
 XML_PATH = REPO_ROOT / "penpot-aio.xml"
+CHANGELOG_PATH = REPO_ROOT / "CHANGELOG.md"
 INVENTORY_PATH = REPO_ROOT / "docs/upstream/penpot-config-inventory.json"
 SECRET_HINTS = (
     "ACCESS_KEY",
@@ -90,17 +92,22 @@ def test_xml_parses_and_has_ca_metadata() -> None:
 
 def test_changes_are_generated_from_latest_changelog_entry() -> None:
     changes = ET.parse(XML_PATH).getroot().findtext("Changes") or ""
+    changelog = CHANGELOG_PATH.read_text(encoding="utf-8")
+    latest = re.search(
+        r"^## [^\n]+ - (?P<date>\d{4}-\d{2}-\d{2})\n(?P<body>.*?)(?=^## |\Z)",
+        changelog,
+        re.MULTILINE | re.DOTALL,
+    )
 
-    assert changes.startswith("### 2026-05-23")  # nosec B101
+    assert latest is not None  # nosec B101
+    assert changes.startswith(f"### {latest.group('date')}")  # nosec B101
     assert (
         "- Generated from CHANGELOG.md during release preparation. Do not edit manually."
         in changes
     )  # nosec B101
-    assert "- Separate Penpot exporter port" in changes  # nosec B101
-    assert (  # nosec B101
-        "- Keep Mailpit UI auth readable when extra.env pre-creates the config directory"
-        in changes
-    )
+    for line in latest.group("body").splitlines():
+        if line.startswith("- "):
+            assert line in changes  # nosec B101
 
 
 def test_upstream_inventory_is_fully_represented() -> None:
