@@ -93,6 +93,12 @@ catalog:
       target: penpot-aio.xml
     - source: assets/app-icon.png
       target: icons/penpot.png
+    - source: screenshots/penpot-aio/01-login.png
+      target: screenshots/penpot-aio/01-login.png
+    - source: screenshots/penpot-aio/02-projects.png
+      target: screenshots/penpot-aio/02-projects.png
+    - source: screenshots/penpot-aio/03-editor.png
+      target: screenshots/penpot-aio/03-editor.png
 tests:
   unit: tests/template
   integration: tests/integration -m integration
