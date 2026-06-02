@@ -25,7 +25,7 @@ chmod 700 /appdata/postgres /appdata/redis /appdata/mailpit
 
 configure_runtime_env
 
-if [[ "${PENPOT_OBJECTS_STORAGE_BACKEND}" == "fs" ]]; then
+if [[ ${PENPOT_OBJECTS_STORAGE_BACKEND} == "fs" ]]; then
 	mkdir -p "${PENPOT_OBJECTS_STORAGE_FS_DIRECTORY}"
 	chown -R penpot:penpot "${PENPOT_OBJECTS_STORAGE_FS_DIRECTORY}"
 fi
