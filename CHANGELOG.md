@@ -2,6 +2,20 @@
 
 All notable changes to this project will be documented in this file.
 
+## 2.15.4-aio.1 - 2026-06-02
+
+### Maintenance
+
+- Update Penpot to 2.15.4.
+
+- Render Penpot's upstream IPv6 nginx listen directive so the frontend service starts cleanly with the 2.15.4 config templates.
+
+- Refresh fleet manifest contract.
+
+### Tests
+
+- Use shared app test helpers.
+
 ## v2.15.3-aio.4 - 2026-05-31
 
 ### Maintenance
