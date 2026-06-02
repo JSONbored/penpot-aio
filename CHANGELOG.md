@@ -2,6 +2,12 @@
 
 All notable changes to this project will be documented in this file.
 
+## v2.15.4-aio.2 - 2026-06-02
+
+### Fixes
+
+- Serve filesystem-backed uploaded media from the configured AppData asset directory.
+
 ## 2.15.4-aio.1 - 2026-06-02
 
 ### Maintenance
