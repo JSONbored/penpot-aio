@@ -71,6 +71,8 @@ def test_happy_path_boot_and_restart_persists_generated_env(
         assert ":6060" in listeners  # nosec B101
         assert ":6061" in listeners  # nosec B101
         assert "Address already in use" not in container.logs()  # nosec B101
+        nginx_config = container.read_text("/etc/nginx/nginx.conf")
+        assert "${PENPOT_IPV6_LISTEN_DIRECTIVE}" not in nginx_config  # nosec B101
 
         container.restart()
         container.wait_for_http(path="/readyz")

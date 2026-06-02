@@ -53,7 +53,7 @@ fi
 PENPOT_DEFAULT_INTERNAL_RESOLVER="$(awk 'BEGIN{ORS=" "} $1=="nameserver" { sub(/%.*$/,"",$2); print ($2 ~ ":")? "["$2"]": $2}' /etc/resolv.conf)"
 export PENPOT_INTERNAL_RESOLVER="${PENPOT_INTERNAL_RESOLVER:-${PENPOT_DEFAULT_INTERNAL_RESOLVER}}"
 envsubst '$PENPOT_INTERNAL_RESOLVER' < /tmp/resolvers.conf.template > /etc/nginx/overrides/http.d/resolvers.conf
-envsubst '$PENPOT_BACKEND_URI,$PENPOT_EXPORTER_URI,$PENPOT_NITRATE_URI,$PENPOT_MCP_URI,$PENPOT_MCP_URI_WS,$PENPOT_HTTP_SERVER_MAX_BODY_SIZE' \
+envsubst '$PENPOT_BACKEND_URI,$PENPOT_EXPORTER_URI,$PENPOT_NITRATE_URI,$PENPOT_MCP_URI,$PENPOT_MCP_URI_WS,$PENPOT_HTTP_SERVER_MAX_BODY_SIZE,$PENPOT_IPV6_LISTEN_DIRECTIVE' \
 	< /tmp/nginx.conf.template > /etc/nginx/nginx.conf
 
 exec nginx -g "daemon off;"
