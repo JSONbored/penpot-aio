@@ -32,10 +32,7 @@
 - The bundled Mailpit inbox is for local/lab capture, not real mail deliverability.</Overview>
   <Changes>### 2026-06-02&#xD;
 - Generated from CHANGELOG.md during release preparation. Do not edit manually.&#xD;
-- Update Penpot to 2.15.4.&#xD;
-- Render Penpot's upstream IPv6 nginx listen directive so the frontend service starts cleanly with the 2.15.4 config templates.&#xD;
-- Refresh fleet manifest contract.&#xD;
-- Use shared app test helpers.</Changes>
+- Serve filesystem-backed uploaded media from the configured AppData asset directory.</Changes>
   <Category>Productivity Tools:Utilities</Category>
   <WebUI>http://[IP]:[PORT:8080]</WebUI>
   <TemplateURL>https://raw.githubusercontent.com/JSONbored/awesome-unraid/main/penpot-aio.xml</TemplateURL>

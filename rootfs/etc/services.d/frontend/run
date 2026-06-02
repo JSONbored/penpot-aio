@@ -56,4 +56,21 @@ envsubst '$PENPOT_INTERNAL_RESOLVER' < /tmp/resolvers.conf.template > /etc/nginx
 envsubst '$PENPOT_BACKEND_URI,$PENPOT_EXPORTER_URI,$PENPOT_NITRATE_URI,$PENPOT_MCP_URI,$PENPOT_MCP_URI_WS,$PENPOT_HTTP_SERVER_MAX_BODY_SIZE,$PENPOT_IPV6_LISTEN_DIRECTIVE' \
 	< /tmp/nginx.conf.template > /etc/nginx/nginx.conf
 
+python3 - <<'PY'
+import os
+from pathlib import Path
+
+assets_dir = os.environ.get("PENPOT_OBJECTS_STORAGE_FS_DIRECTORY", "/appdata/assets")
+if not assets_dir.startswith("/") or any(char in assets_dir for char in "\r\n;{}"):
+    raise SystemExit(f"invalid PENPOT_OBJECTS_STORAGE_FS_DIRECTORY: {assets_dir!r}")
+
+config = Path("/etc/nginx/nginx.conf")
+contents = config.read_text()
+expected = "alias /opt/data/assets;"
+replacement = f"alias {assets_dir};"
+if expected not in contents:
+    raise SystemExit("unable to locate Penpot internal assets alias in nginx.conf")
+config.write_text(contents.replace(expected, replacement, 1))
+PY
+
 exec nginx -g "daemon off;"
