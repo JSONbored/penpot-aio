@@ -2,6 +2,16 @@
 
 All notable changes to this project will be documented in this file.
 
+## 2.16.0-aio.1 - 2026-06-12
+
+### Fixes
+
+- Keep gateway online when external template host fails DNS (#19)
+
+### Maintenance
+
+- Update upstream pins for penpot-aio (#18)
+
 ## v2.15.4-aio.2 - 2026-06-02
 
 ### Fixes
