@@ -214,9 +214,7 @@ def test_gateway_boots_when_external_template_host_cannot_resolve(
         assert (
             "proxy_pass https://raw.githubusercontent.com;" not in external
         )  # nosec B101
-        assert (
-            "proxy_pass https://$penpot_github_upstream;" in external
-        )  # nosec B101
+        assert "proxy_pass https://$penpot_github_upstream;" in external  # nosec B101
 
         container.exec("nginx -t")
         assert ":8080" in container.exec("ss -ltn").stdout  # nosec B101
