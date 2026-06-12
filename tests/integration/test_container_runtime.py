@@ -190,6 +190,39 @@ def test_frontend_config_encodes_public_uri_as_javascript_string(
         container.exec("node --check /var/www/app/js/config.js")
 
 
+def test_gateway_boots_when_external_template_host_cannot_resolve(
+    runtime: DockerRuntime,
+) -> None:
+    # Regression for penpot-aio#17. The upstream frontend ships
+    # external-locations.conf with a literal
+    # `proxy_pass https://raw.githubusercontent.com;`, which nginx resolves at
+    # config-load time. When that host could not be resolved at boot, nginx
+    # refused to start, the whole gateway went down, and the UI rendered a blank
+    # page with a "Something wrong has happened" toast. Force external DNS to
+    # fail (loopback resolver with nothing listening) and assert the gateway
+    # still binds, serves, and proxies the bundled backend.
+    with runtime.container(
+        env_overrides={"PENPOT_PUBLIC_URI": "http://127.0.0.1:9001"},
+        extra_args=["--dns", "127.0.0.1"],
+    ) as container:
+        container.wait_for_http(path="/readyz")
+        container.wait_for_http(path="/")
+
+        external = container.read_text(
+            "/etc/nginx/overrides/location.d/external-locations.conf"
+        )
+        assert (
+            "proxy_pass https://raw.githubusercontent.com;" not in external
+        )  # nosec B101
+        assert (
+            "proxy_pass https://$penpot_github_upstream;" in external
+        )  # nosec B101
+
+        container.exec("nginx -t")
+        assert ":8080" in container.exec("ss -ltn").stdout  # nosec B101
+        assert "host not found in upstream" not in container.logs()  # nosec B101
+
+
 @pytest.mark.extended_integration
 def test_external_postgres_and_redis_mode_boots_without_bundled_services(
     runtime: DockerRuntime,
