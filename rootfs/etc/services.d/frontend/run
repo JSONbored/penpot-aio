@@ -42,6 +42,22 @@ if [[ ${PENPOT_FLAGS:-} == *"enable-air-gapped-conf"* ]]; then
 	export PENPOT_FLAGS="${PENPOT_FLAGS} disable-google-fonts-provider disable-dashboard-templates-section"
 fi
 
+# penpot-aio#17: The upstream frontend ships external-locations.conf with a
+# literal `proxy_pass https://raw.githubusercontent.com;`. nginx resolves
+# literal proxy_pass hosts at config-load time, so when that host cannot be
+# resolved when the container starts (DNS races, restrictive or offline
+# networks, blocking resolvers) nginx refuses to start and the whole gateway —
+# and therefore the entire web UI — goes blank. Rewrite the literal host to a
+# variable so nginx defers the lookup to request time via the configured
+# resolver; the optional dashboard-template proxy then degrades gracefully
+# instead of taking the gateway down at boot. Idempotent across s6 restarts.
+external_locations="/etc/nginx/overrides/location.d/external-locations.conf"
+if [[ -f ${external_locations} ]]; then
+	sed -i -E \
+		's#^([[:space:]]*)proxy_pass https://raw\.githubusercontent\.com;#\1set $penpot_github_upstream raw.githubusercontent.com;\n\1proxy_pass https://$penpot_github_upstream;#' \
+		"${external_locations}"
+fi
+
 if [[ -n ${PENPOT_FLAGS:-} ]]; then
 	write_js_config_value "penpotFlags" "${PENPOT_FLAGS}" "replace"
 fi
