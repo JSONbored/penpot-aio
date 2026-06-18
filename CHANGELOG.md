@@ -2,6 +2,12 @@
 
 All notable changes to this project will be documented in this file.
 
+## 2.16.0-aio.3 - 2026-06-18
+
+### Refactors
+
+- Migrate to the shared aio-base s6 overlay (#24)
+
 ## 2.16.0-aio.2 - 2026-06-17
 
 ### Maintenance
