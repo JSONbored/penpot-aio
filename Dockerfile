@@ -29,10 +29,10 @@ USER root
 ENV DEBIAN_FRONTEND=noninteractive
 SHELL ["/bin/bash", "-o", "pipefail", "-c"]
 
-# hadolint ignore=DL3003
 # Shared, pinned s6-overlay from the fleet aio-base overlay.
 COPY --from=aio-base /aio-overlay/ /
 
+# hadolint ignore=DL3003
 RUN aio-harden pre && \
     apt-get update && \
     apt-get -y dist-upgrade && \
