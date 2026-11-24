@@ -1,15 +1,52 @@
-name: Inspect Penpot build
+name: Verify published-image upgrade
 on:
   push:
     branches: [maintenance/refresh-penpot-2.19.4]
 permissions:
   contents: read
 jobs:
-  build:
-    runs-on: ubuntu-24.04
+  upgrade:
+    strategy:
+      fail-fast: false
+      matrix:
+        runner: [ubuntu-24.04, ubuntu-24.04-arm]
+    runs-on: ${{ matrix.runner }}
+    timeout-minutes: 45
     steps:
       - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd
         with:
-          ref: fix/penpot-2.19-runtime
+          ref: 133333e3b2e71065805d8ec078d4dd08a972c48c
           persist-credentials: false
-      - run: docker build --progress=plain -t penpot-aio:pytest .
+      - name: Build the reviewed candidate
+        run: docker build --progress=plain -t candidate:upgrade .
+      - name: Upgrade the current public image with an existing database and files
+        shell: bash
+        run: |
+          set -euo pipefail
+          docker pull jsonbored/penpot-aio:2.16.0-aio.3@sha256:cb7bf730463f9ff81f0e2a567c33e182ed8769ced0b61d229b004068daa07b29
+          docker volume create appdata
+          wait_ready() {
+            for _ in $(seq 1 180); do
+              if docker exec "$1" curl -fsS http://127.0.0.1:8080/readyz >/dev/null 2>&1; then return; fi
+              if [[ $(docker inspect -f '{{.State.Running}}' "$1") != true ]]; then break; fi
+              sleep 3
+            done
+            docker logs --tail=150 "$1"
+            return 1
+          }
+          docker run -d --name old -v appdata:/appdata jsonbored/penpot-aio:2.16.0-aio.3@sha256:cb7bf730463f9ff81f0e2a567c33e182ed8769ced0b61d229b004068daa07b29
+          wait_ready old
+          docker exec -u postgres old psql --set ON_ERROR_STOP=1 -d penpot -c "CREATE TABLE aio_upgrade_probe(marker text); INSERT INTO aio_upgrade_probe VALUES ('old-image');"
+          docker exec old bash -c 'printf "%s\n" old-image > /appdata/assets/aio-upgrade-proof'
+          old_keys=$(docker exec old bash -c "grep -E '^(PENPOT_SECRET_KEY|PENPOT_DATABASE_PASSWORD|PENPOT_AIO_REDIS_PASSWORD)=' /appdata/config/generated.env | sort | sha256sum")
+          docker stop -t 90 old
+          docker rm old
+          docker volume create restored-appdata
+          docker run --rm --entrypoint /bin/bash -v appdata:/from:ro -v restored-appdata:/to candidate:upgrade -o pipefail -c 'tar -C /from -cpf - . | tar -C /to -xpf -'
+          docker run -d --name candidate -v restored-appdata:/appdata candidate:upgrade
+          wait_ready candidate
+          test "$(docker exec -u postgres candidate psql --set ON_ERROR_STOP=1 -At -d penpot -c 'SELECT marker FROM aio_upgrade_probe')" = old-image
+          test "$(docker exec candidate cat /appdata/assets/aio-upgrade-proof)" = old-image
+          test "$old_keys" = "$(docker exec candidate bash -c "grep -E '^(PENPOT_SECRET_KEY|PENPOT_DATABASE_PASSWORD|PENPOT_AIO_REDIS_PASSWORD)=' /appdata/config/generated.env | sort | sha256sum")"
+          docker exec candidate nginx -t
+          echo "Preserved application database, stored file and existing secret hashes."
