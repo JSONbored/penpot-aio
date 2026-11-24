@@ -19,6 +19,8 @@ FROM axllent/mailpit:${MAILPIT_VERSION}@${MAILPIT_IMAGE_DIGEST} AS mailpit
 FROM penpotapp/exporter:${PENPOT_VERSION}@${PENPOT_EXPORTER_DIGEST}
 
 ARG INTERNAL_POSTGRESQL_MAJOR=16
+# Hardened amd64 packages supply server and client binaries in this directory.
+ENV PATH="/usr/lib/postgresql/${INTERNAL_POSTGRESQL_MAJOR}/bin:${PATH}"
 
 LABEL org.opencontainers.image.source="https://github.com/JSONbored/penpot-aio" \
       org.opencontainers.image.title="penpot-aio" \

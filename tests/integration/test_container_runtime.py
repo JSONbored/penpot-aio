@@ -1,6 +1,8 @@
 from __future__ import annotations
 
+import json
 import os
+import shlex
 import uuid
 
 import pytest
@@ -77,18 +79,36 @@ def test_happy_path_boot_and_restart_persists_generated_env(
         assert "alias /appdata/assets;" in nginx_config  # nosec B101
         assert "alias /opt/data/assets;" not in nginx_config  # nosec B101
 
-        # Fetch MCP through Penpot's published frontend port. The JSON-RPC
-        # response distinguishes the real service from the UI's catch-all.
-        mcp = container.exec(
+        # Ask the frontend for the tool catalog using the publisher's HTTP protocol.
+        protocol = "2026-07-28"
+        request = json.dumps(
+            {
+                "jsonrpc": "2.0",
+                "method": "tools/list",
+                "id": 1,
+                "params": {
+                    "_meta": {
+                        "io.modelcontextprotocol/protocolVersion": protocol,
+                        "io.modelcontextprotocol/clientInfo": {
+                            "name": "penpot-aio-test",
+                            "version": "1",
+                        },
+                        "io.modelcontextprotocol/clientCapabilities": {},
+                    }
+                },
+            }
+        )
+        response = container.exec(
             "curl -fsS --retry 8 --retry-all-errors --retry-delay 1 --max-time 5 "
             "-H 'Content-Type: application/json' "
             "-H 'Accept: application/json, text/event-stream' "
-            """--data '{"jsonrpc":"2.0","method":"initialize","id":1,"params":"""
-            """{"protocolVersion":"2025-03-26","capabilities":{},"clientInfo":"""
-            """{"name":"penpot-aio-test","version":"1"}}}' """
-            "http://127.0.0.1:8080/mcp/stream?userToken=aio-test"
+            f"-H 'MCP-Protocol-Version: {protocol}' "
+            "-H 'Mcp-Method: tools/list' "
+            f"--data {shlex.quote(request)} "
+            "'http://127.0.0.1:8080/mcp/stream?userToken=aio-test'"
         ).stdout
-        assert '"protocolVersion"' in mcp  # nosec B101
+        tools = json.loads(response)["result"]["tools"]
+        assert any(tool["name"] == "execute_code" for tool in tools)  # nosec B101
 
         container.restart()
         container.wait_for_http(path="/readyz")
