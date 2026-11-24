@@ -2,6 +2,12 @@
 
 All notable changes to this project will be documented in this file.
 
+## 2.19.4-aio.1 - 2026-11-24
+
+### Fixes
+
+- Upgrade Penpot to 2.19.4 and repair public MCP routing (#28)
+
 ## 2.16.0-aio.3 - 2026-06-18
 
 ### Refactors
