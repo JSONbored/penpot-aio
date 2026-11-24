@@ -33,7 +33,10 @@ SHELL ["/bin/bash", "-o", "pipefail", "-c"]
 COPY --from=aio-base /aio-overlay/ /
 
 # hadolint ignore=DL3003
+# The exporter uses Debian Hardened Images, which omit the traditional
+# service accounts assumed by Debian's nginx-common postinst.
 RUN aio-harden pre && (getent group adm >/dev/null || groupadd --system adm) && \
+    (getent passwd www-data >/dev/null || useradd --system --user-group --no-create-home --home-dir /var/www --shell /usr/sbin/nologin www-data) && \
     apt-get update && \
     install -d /usr/share/postgresql-common/pgdg && \
     curl -fsSLo /usr/share/postgresql-common/pgdg/apt.postgresql.org.asc https://www.postgresql.org/media/keys/ACCC4CF8.asc && \
