@@ -88,6 +88,7 @@ Required local validation is split between app-specific tests and `aio-fleet`:
 python3 -m venv .venv-local
 .venv-local/bin/pip install -e "../aio-fleet[app-tests]"
 python3 scripts/refresh_upstream_inventory.py
+npx --yes prettier@3.8.3 --write docs/upstream/penpot-config-inventory.json
 python3 scripts/generate_penpot_template.py --check
 .venv-local/bin/pytest tests/template --junit-xml=reports/pytest-unit.xml -o junit_family=xunit1
 .venv-local/bin/pytest tests/integration -m integration --junit-xml=reports/pytest-integration.xml -o junit_family=xunit1
