@@ -200,7 +200,9 @@ def test_mcp_service_can_be_disabled_without_blocking_frontend(
     ) as container:
         container.wait_for_http(path="/readyz")
         assert "Bundled MCP disabled" in container.logs()  # nosec B101
-        assert not container.path_exists("/etc/nginx/overrides/server.d/mcp-locations.conf")  # nosec B101
+        assert not container.path_exists(
+            "/etc/nginx/overrides/server.d/mcp-locations.conf"
+        )  # nosec B101
         probe = container.exec(
             "timeout 2 bash -lc 'echo >/dev/tcp/127.0.0.1/4401'",
             check=False,
