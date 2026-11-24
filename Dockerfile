@@ -33,7 +33,7 @@ SHELL ["/bin/bash", "-o", "pipefail", "-c"]
 COPY --from=aio-base /aio-overlay/ /
 
 # hadolint ignore=DL3003
-RUN aio-harden pre && \
+RUN aio-harden pre && (getent group adm >/dev/null || groupadd --system adm) && \
     apt-get update && \
     install -d /usr/share/postgresql-common/pgdg && \
     curl -fsSLo /usr/share/postgresql-common/pgdg/apt.postgresql.org.asc https://www.postgresql.org/media/keys/ACCC4CF8.asc && \
