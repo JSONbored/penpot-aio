@@ -37,6 +37,8 @@ COPY --from=aio-base /aio-overlay/ /
 # service accounts assumed by Debian's nginx-common postinst.
 RUN aio-harden pre && (getent group adm >/dev/null || groupadd --system adm) && \
     (getent passwd www-data >/dev/null || useradd --system --user-group --no-create-home --home-dir /var/www --shell /usr/sbin/nologin www-data) && \
+    (getent passwd postgres >/dev/null || useradd --system --user-group --no-create-home --home-dir /var/lib/postgresql --shell /bin/bash postgres) && \
+    (getent passwd redis >/dev/null || useradd --system --user-group --no-create-home --home-dir /var/lib/redis --shell /usr/sbin/nologin redis) && \
     apt-get update && \
     install -d /usr/share/postgresql-common/pgdg && \
     curl -fsSLo /usr/share/postgresql-common/pgdg/apt.postgresql.org.asc https://www.postgresql.org/media/keys/ACCC4CF8.asc && \
