@@ -50,3 +50,17 @@ jobs:
           test "$old_keys" = "$(docker exec candidate bash -c "grep -E '^(PENPOT_SECRET_KEY|PENPOT_DATABASE_PASSWORD|PENPOT_AIO_REDIS_PASSWORD)=' /appdata/config/generated.env | sort | sha256sum")"
           docker exec candidate nginx -t
           echo "Preserved application database, stored file and existing secret hashes."
+      - name: Show failed service diagnostics
+        if: failure()
+        shell: bash
+        run: |
+          for name in old candidate; do
+            if ! docker inspect "$name" >/dev/null 2>&1; then continue; fi
+            echo "Services on $name"
+            docker top "$name" -eo user,comm || true
+            docker exec "$name" ss -lnt || true
+            docker exec "$name" sh -c 'for s in /run/service/*; do /command/s6-svstat "$s"; done' || true
+            docker exec "$name" sh -c 'ls -ld /appdata/postgres /run/postgresql; cat /appdata/postgres/PG_VERSION; ls -l /usr/bin/pg_isready /usr/lib/postgresql/*/bin/pg_isready; pg_isready -h 127.0.0.1 -p 5432; /usr/lib/postgresql/16/bin/pg_isready -h 127.0.0.1 -p 5432' || true
+            docker exec -u postgres "$name" /usr/lib/postgresql/16/bin/psql -d postgres -Atc 'select 1' || true
+            docker logs "$name" 2>&1 | grep -Ei 'error|fail|panic|fatal|permission|denied|no such|invalid|terminat|database system|could not|cannot|not found|s6-rc: info: service' | grep -vi 'waiting for' | sed -E 's#(://)[^ ]+:([^@ ]*)@#\1[redacted]@#g' | head -100 || true
+          done
