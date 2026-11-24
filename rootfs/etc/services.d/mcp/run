@@ -16,7 +16,7 @@ chown -R penpot:penpot "${PENPOT_MCP_LOG_DIR:-/appdata/logs/mcp}"
 export HOME="/opt/penpot"
 export USER="penpot"
 export LOGNAME="penpot"
-export PATH="/command:/opt/node-mcp/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin"
+export PATH="/command:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin"
 
 cd /opt/penpot/mcp
-exec /command/s6-setuidgid penpot /opt/node-mcp/bin/node index.js --multi-user
+exec /command/s6-setuidgid penpot /usr/local/bin/node index.js --multi-user

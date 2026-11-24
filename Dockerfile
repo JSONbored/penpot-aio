@@ -2,11 +2,11 @@
 # checkov:skip=CKV_DOCKER_3: s6-overlay requires root init so bundled services can prepare state before each service drops privileges
 # checkov:skip=CKV_DOCKER_8: s6-overlay entrypoint must start as root so cont-init can initialize persistent state
 
-ARG PENPOT_VERSION=2.19.3
-ARG PENPOT_FRONTEND_DIGEST=sha256:d22ce9f6f4859adbc726f45965da0d4b083817b0c13ca4a49aa3e927901cccb9
-ARG PENPOT_BACKEND_DIGEST=sha256:31ebb4dabd104c2ed3ae736dcf5a6043a0660ddaac7bcd8501c28036fb4b578c
-ARG PENPOT_EXPORTER_DIGEST=sha256:1705d70e79f3530b3cee65d0cdbee3c5f44f26d62f5ad43bac7945dce4c7b653
-ARG PENPOT_MCP_DIGEST=sha256:01ee7620262379c337a9f77e3149d860330d261ffc640d89af60dc8bd45aef94
+ARG PENPOT_VERSION=2.19.4
+ARG PENPOT_FRONTEND_DIGEST=sha256:387b403d893f69b24694d9390020b3f56a1d06739210d660ddb55606268f02cf
+ARG PENPOT_BACKEND_DIGEST=sha256:9e447471d9db381b0c68233027c8cd167d21ff44d466c92a4266da4a82fda5b0
+ARG PENPOT_EXPORTER_DIGEST=sha256:11546ad4945d0b3147b98079d40a7a8c4649b518ab3ec56bd22783f0f3c66c21
+ARG PENPOT_MCP_DIGEST=sha256:239d2ed817928abf042c55910708cb19eda330917b2fd0d920c86006a2eb4cb1
 ARG MAILPIT_VERSION=v1.34.0
 ARG MAILPIT_IMAGE_DIGEST=sha256:23a2ef85bc50853ab3093645d1d64679afd8887e89da5e48a88940c172591a4e
 
@@ -35,11 +35,19 @@ COPY --from=aio-base /aio-overlay/ /
 # hadolint ignore=DL3003
 RUN aio-harden pre && \
     apt-get update && \
+    install -d /usr/share/postgresql-common/pgdg && \
+    curl -fsSLo /usr/share/postgresql-common/pgdg/apt.postgresql.org.asc https://www.postgresql.org/media/keys/ACCC4CF8.asc && \
+    . /etc/os-release && \
+    echo "deb [signed-by=/usr/share/postgresql-common/pgdg/apt.postgresql.org.asc] https://apt.postgresql.org/pub/repos/apt ${VERSION_CODENAME}-pgdg main" > /etc/apt/sources.list.d/pgdg.list && \
+    apt-get update && \
     apt-get -y dist-upgrade && \
     apt-get install -y --no-install-recommends \
       ca-certificates="$(apt-cache madison ca-certificates | awk 'NR==1 {print $3}')" \
       curl="$(apt-cache madison curl | awk 'NR==1 {print $3}')" \
       gettext-base="$(apt-cache madison gettext-base | awk 'NR==1 {print $3}')" \
+      iproute2="$(apt-cache madison iproute2 | awk 'NR==1 {print $3}')" \
+      procps="$(apt-cache madison procps | awk 'NR==1 {print $3}')" \
+      python3="$(apt-cache madison python3 | awk 'NR==1 {print $3}')" \
       nginx="$(apt-cache madison nginx | awk 'NR==1 {print $3}')" \
       openssl="$(apt-cache madison openssl | awk 'NR==1 {print $3}')" \
       "postgresql-${INTERNAL_POSTGRESQL_MAJOR}=$(apt-cache madison postgresql-${INTERNAL_POSTGRESQL_MAJOR} | awk 'NR==1 {print $3}')" \
@@ -47,6 +55,8 @@ RUN aio-harden pre && \
       redis-server="$(apt-cache madison redis-server | awk 'NR==1 {print $3}')" \
       redis-tools="$(apt-cache madison redis-tools | awk 'NR==1 {print $3}')" \
       xz-utils="$(apt-cache madison xz-utils | awk 'NR==1 {print $3}')" && \
+    node_path="$(command -v node)" && \
+    if [ "$node_path" != "/usr/local/bin/node" ]; then ln -sf "$node_path" /usr/local/bin/node; fi && \
     useradd --system --home-dir /var/lib/mailpit --create-home --shell /usr/sbin/nologin mailpit && \
     mkdir -p /appdata/config /appdata/assets /appdata/logs /appdata/mailpit /appdata/postgres /appdata/redis /run/penpot-aio /run/postgresql /etc/nginx/overrides/http.d && \
     chown -R penpot:penpot /appdata/assets /appdata/logs && \
@@ -59,16 +69,22 @@ RUN aio-harden pre && \
 COPY --from=backend /opt/jre /opt/jre
 COPY --from=backend /opt/penpot/backend /opt/penpot/backend
 COPY --from=frontend /var/www/app /var/www/app
-COPY --from=frontend /tmp/nginx.conf.template /tmp/nginx.conf.template
-COPY --from=frontend /tmp/resolvers.conf.template /tmp/resolvers.conf.template
-COPY --from=frontend /etc/nginx/nginx-security-headers.conf /etc/nginx/nginx-security-headers.conf
+COPY --from=frontend /tmp/*.conf.template /tmp/
+COPY --from=frontend /etc/nginx /opt/penpot/frontend-nginx
+COPY --from=frontend /entrypoint.sh /opt/penpot/render-nginx.sh
 COPY --from=frontend /etc/nginx/overrides /etc/nginx/overrides
-COPY --from=mcp /opt/node /opt/node-mcp
 COPY --from=mcp /opt/penpot/mcp /opt/penpot/mcp
 COPY --from=mailpit /mailpit /usr/local/bin/mailpit
 COPY rootfs/ /
 
-RUN find /etc/cont-init.d -type f -exec chmod +x {} \; && \
+# The AIO renders JavaScript using JSON string escaping. Reuse the publisher's
+# nginx configuration, including its MCP routes, CSP, HSTS and worker limits.
+RUN grep -Fxq '## Air Gapped config' /opt/penpot/render-nginx.sh && \
+    grep -Fxq '## Nginx Config' /opt/penpot/render-nginx.sh && \
+    sed -i '/^## Air Gapped config$/,/^## Nginx Config$/d' /opt/penpot/render-nginx.sh && \
+    cp /opt/penpot/frontend-nginx/mime.types /etc/nginx/ && \
+    if [ -f /opt/penpot/frontend-nginx/csp-script-hashes.txt ]; then cp /opt/penpot/frontend-nginx/csp-script-hashes.txt /etc/nginx/; fi && \
+    find /etc/cont-init.d -type f -exec chmod +x {} \; && \
     find /etc/services.d -type f -name run -exec chmod +x {} \; && \
     find /usr/local/bin -type f -exec chmod +x {} \; && \
     chown -R penpot:penpot /opt/penpot /var/www/app
