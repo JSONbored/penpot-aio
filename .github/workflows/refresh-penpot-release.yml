@@ -15,7 +15,7 @@ jobs:
     steps:
       - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd
         with:
-          ref: b67169063b95405ffc93c0801273da1adee81b5a
+          ref: 088f03a6a96bbf0f238bdb7c258452cc2456aab2
           persist-credentials: false
       - name: Build the reviewed candidate
         run: docker build --progress=plain -t candidate:upgrade .
@@ -57,7 +57,7 @@ jobs:
           for name in old candidate; do
             if ! docker inspect "$name" >/dev/null 2>&1; then continue; fi
             echo "Services on $name"
-            docker top "$name" -eo user,comm || true
+            docker top "$name" -eo pid,user,comm || true
             docker exec "$name" ss -lnt || true
             docker exec "$name" sh -c 'for s in /run/service/*; do /command/s6-svstat "$s"; done' || true
             docker exec "$name" sh -c 'ls -ld /appdata/postgres /run/postgresql; cat /appdata/postgres/PG_VERSION; ls -l /usr/bin/pg_isready /usr/lib/postgresql/*/bin/pg_isready; pg_isready -h 127.0.0.1 -p 5432; /usr/lib/postgresql/16/bin/pg_isready -h 127.0.0.1 -p 5432' || true
