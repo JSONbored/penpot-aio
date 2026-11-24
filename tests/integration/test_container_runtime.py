@@ -1,6 +1,8 @@
 from __future__ import annotations
 
+import json
 import os
+import shlex
 import uuid
 
 import pytest
@@ -76,6 +78,37 @@ def test_happy_path_boot_and_restart_persists_generated_env(
         assert "location /internal/assets" in nginx_config  # nosec B101
         assert "alias /appdata/assets;" in nginx_config  # nosec B101
         assert "alias /opt/data/assets;" not in nginx_config  # nosec B101
+
+        # Ask the frontend for the tool catalog using the publisher's HTTP protocol.
+        protocol = "2026-07-28"
+        request = json.dumps(
+            {
+                "jsonrpc": "2.0",
+                "method": "tools/list",
+                "id": 1,
+                "params": {
+                    "_meta": {
+                        "io.modelcontextprotocol/protocolVersion": protocol,
+                        "io.modelcontextprotocol/clientInfo": {
+                            "name": "penpot-aio-test",
+                            "version": "1",
+                        },
+                        "io.modelcontextprotocol/clientCapabilities": {},
+                    }
+                },
+            }
+        )
+        response = container.exec(
+            "curl -fsS --retry 8 --retry-all-errors --retry-delay 1 --max-time 5 "
+            "-H 'Content-Type: application/json' "
+            "-H 'Accept: application/json, text/event-stream' "
+            f"-H 'MCP-Protocol-Version: {protocol}' "
+            "-H 'Mcp-Method: tools/list' "
+            f"--data {shlex.quote(request)} "
+            "'http://127.0.0.1:8080/mcp/stream?userToken=aio-test'"
+        ).stdout
+        tools = json.loads(response)["result"]["tools"]
+        assert any(tool["name"] == "execute_code" for tool in tools)  # nosec B101
 
         container.restart()
         container.wait_for_http(path="/readyz")
@@ -167,6 +200,9 @@ def test_mcp_service_can_be_disabled_without_blocking_frontend(
     ) as container:
         container.wait_for_http(path="/readyz")
         assert "Bundled MCP disabled" in container.logs()  # nosec B101
+        assert not container.path_exists(
+            "/etc/nginx/overrides/server.d/mcp-locations.conf"
+        )  # nosec B101
         probe = container.exec(
             "timeout 2 bash -lc 'echo >/dev/tcp/127.0.0.1/4401'",
             check=False,

@@ -10,9 +10,9 @@ wait_for_redis_ready
 export HOME="/opt/penpot"
 export USER="penpot"
 export LOGNAME="penpot"
-export PATH="/command:/opt/node/bin:/opt/imagick/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin"
+export PATH="/command:/opt/imagick/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin"
 export PLAYWRIGHT_BROWSERS_PATH="${PLAYWRIGHT_BROWSERS_PATH:-/opt/penpot/browsers}"
 export PENPOT_HTTP_SERVER_PORT="6061"
 
 cd /opt/penpot/exporter
-exec /command/s6-setuidgid penpot /opt/node/bin/node app.js
+exec /command/s6-setuidgid penpot /usr/local/bin/node app.js

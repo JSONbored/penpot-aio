@@ -23,15 +23,15 @@ fi
 
 if [[ ! -f /appdata/postgres/PG_VERSION ]]; then
 	log "Initializing bundled PostgreSQL cluster..."
-	su -s /bin/bash postgres -c "${PG_BIN_DIR}/initdb -D /appdata/postgres --locale=C.UTF-8 --encoding=UTF8 --auth-local=peer --auth-host=scram-sha-256"
+	/command/s6-setuidgid postgres "${PG_BIN_DIR}/initdb" -D /appdata/postgres --locale=C.UTF-8 --encoding=UTF8 --auth-local=peer --auth-host=scram-sha-256
 fi
 
-su -s /bin/bash postgres -c "${PG_BIN_DIR}/pg_ctl -D /appdata/postgres -o \"-c listen_addresses='127.0.0.1'\" -w start"
+/command/s6-setuidgid postgres "${PG_BIN_DIR}/pg_ctl" -D /appdata/postgres -o "-c listen_addresses=127.0.0.1" -w start
 
 PENPOT_INIT_DATABASE_USERNAME="${PENPOT_DATABASE_USERNAME}" \
 	PENPOT_INIT_DATABASE_PASSWORD="${PENPOT_DATABASE_PASSWORD}" \
 	PENPOT_INIT_DATABASE_NAME="${PENPOT_AIO_DATABASE_NAME}" \
-	python3 <<'PY' | su -s /bin/bash postgres -c "psql postgres"
+	python3 <<'PY' | /command/s6-setuidgid postgres "${PG_BIN_DIR}/psql" -v ON_ERROR_STOP=1 -d postgres
 import os
 
 user = os.environ["PENPOT_INIT_DATABASE_USERNAME"]
@@ -60,6 +60,6 @@ WHERE NOT EXISTS (SELECT 1 FROM pg_database WHERE datname = {literal(dbname)})\\
 """
 )
 PY
-su -s /bin/bash postgres -c "${PG_BIN_DIR}/pg_ctl -D /appdata/postgres -m fast -w stop"
+/command/s6-setuidgid postgres "${PG_BIN_DIR}/pg_ctl" -D /appdata/postgres -m fast -w stop
 
 log "Bundled PostgreSQL bootstrap is complete."
